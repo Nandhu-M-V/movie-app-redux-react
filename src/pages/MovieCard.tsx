@@ -2,10 +2,10 @@ export interface Movie {
   id: number;
   title: string;
   poster_path: string | null;
-  backdrop_path: string | null;
+  backdrop_path?: string | null;
   overview: string;
-  release_date: string;
-  vote_average: number;
+  release_date?: string;
+  vote_average?: number;
 }
 
 const IMAGE_BASE_URL = 'https://image.tmdb.org/t/p/w500';
