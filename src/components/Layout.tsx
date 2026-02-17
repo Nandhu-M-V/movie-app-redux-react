@@ -6,7 +6,7 @@ const Layout = () => {
   return (
     <>
       <Header />
-      <main className=" w-full h-50 bg-amber-200">
+      <main className=" w-full text-white bg-black ">
         <Outlet />
       </main>
       <Footer />

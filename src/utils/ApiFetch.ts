@@ -33,3 +33,16 @@ export const getDiscoverMovies = async (): Promise<Movie[]> => {
 
   return res.data.results;
 };
+
+export const getDiscoverTvShows = async (): Promise<Movie[]> => {
+  const res = await tmdbApi.get('/discover/movie', {
+    params: {
+      include_video: false,
+      language: 'en-US',
+      page: 1,
+      sort_by: 'popularity.desc',
+    },
+  });
+
+  return res.data.results;
+};
