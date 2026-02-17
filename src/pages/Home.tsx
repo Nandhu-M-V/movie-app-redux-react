@@ -1,4 +1,5 @@
 import { fetchMovies } from '../features/movies/movieSlice';
+import { fetchTvShows } from '@/features/Tvshows/tvshowSlice';
 import type { AppDispatch, RootState } from '../app/store';
 // import MovieCard from '../components/MovieCard';
 // // import HeroBanner from '../components/HeroBanner';
@@ -11,13 +12,21 @@ import HomeCards from '@/components/Homecards';
 
 const Home = () => {
   const dispatch = useDispatch<AppDispatch>();
+  const IMAGE_BANNER_URL = 'https://image.tmdb.org/t/p/original';
 
   const { movies, loading, error } = useSelector(
     (state: RootState) => state.movie
   );
 
+  const { tvShows, loading1, error1 } = useSelector(
+    (state: RootState) => state.tvshow
+  );
+
   useEffect(() => {
     dispatch(fetchMovies());
+  }, [dispatch]);
+  useEffect(() => {
+    dispatch(fetchTvShows());
   }, [dispatch]);
 
   const randomSeed = useRef(Math.random());
@@ -28,15 +37,24 @@ const Home = () => {
       : null;
 
   if (loading) return <Loading />;
+  if (loading1) return <Loading />;
   if (error) return <p className="text-red-500">{error}</p>;
+  if (error1) return <p className="text-red-500">{error}</p>;
 
   return (
-    <div className="bg-black min-h-screen text-white">
+    <div className=" min-h-screen pl-20 text-white">
+      {randomMovie?.backdrop_path && (
+        <img
+          src={`${IMAGE_BANNER_URL}${randomMovie.backdrop_path}`}
+          className="w-full left-0 -z-10 blur-3xl fixed h-full object-cover rounded-4xl"
+          alt="movie backdrop"
+        />
+      )}
       {randomMovie?.backdrop_path && (
         <HomeBanner backdrop={randomMovie.backdrop_path} />
       )}
 
-      <h2 className="font-extrabold text-4xl pl-5">Trending movies</h2>
+      <h2 className="font-extrabold py-4 text-4xl">Movies</h2>
 
       <div
         className="
@@ -46,6 +64,7 @@ const Home = () => {
             scroll-smooth
             snap-x
             scrollbar-hide
+            mb-5
         "
       >
         {movies.map((movie) => (
@@ -54,7 +73,8 @@ const Home = () => {
           </div>
         ))}
       </div>
-      <h2 className="font-extrabold text-4xl pl-5">Top TV Shows</h2>
+
+      <h2 className=" font-extrabold py-4 text-4xl">TV Shows</h2>
 
       <div
         className="
@@ -65,9 +85,10 @@ const Home = () => {
             scroll-smooth
             snap-x
             scrollbar-hide
+            mb-15
         "
       >
-        {movies.map((movie) => (
+        {tvShows.map((movie) => (
           <div key={movie.id} className="snap-start">
             <HomeCards movie={movie} />
           </div>

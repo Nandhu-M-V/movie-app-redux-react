@@ -5,17 +5,18 @@ const Header = () => {
 
   return (
     <header
-      className="fixed top-0 w-fit px-10 rounded-2xl border border-gray-800 z-50
+      className="fixed left-10 top-0  px-3 rounded-2xl border border-gray-700 z-50
                        bg-linear-to-b from-black/90 to-transparent
-                       backdrop-blur-md"
+                       backdrop-blur-lg"
     >
       <nav
         className="max-w-7xl mx-auto
                       flex items-center
+                      justify-
                       h-20 px-6 text-white"
       >
         <h1
-          className="text-3xl font-extrabold text-blue-600 hover:text-white mr-10 cursor-pointer"
+          className="text-3xl font-extrabold text-purple-700 text-shadow-xs hover:scale-105 text-shadow-white hover:text-purple-600 mr-10 cursor-pointer"
           onClick={() => navigate('/Home')}
         >
           MovieApp
@@ -48,6 +49,7 @@ const Header = () => {
           </li>
         </ul>
       </nav>
+      {/* <button className="bg-white absolute"> login</button> */}
     </header>
   );
 };

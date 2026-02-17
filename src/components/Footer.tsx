@@ -1,6 +1,10 @@
+import { useNavigate } from 'react-router-dom';
+
 const Footer = () => {
+  const navigate = useNavigate();
+
   return (
-    <footer className="bg-zinc-900 text-gray-400 mt-16">
+    <footer className="bg-zinc-900 z-10 text-gray-400">
       <div className="max-w-6xl mx-auto px-6 py-10">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8 text-sm">
           <div>
@@ -14,19 +18,27 @@ const Footer = () => {
           <div>
             <h3 className="text-white font-medium mb-3">Quick Links</h3>
             <ul className="space-y-2">
-              <li className="hover:text-white transition cursor-pointer">
+              <li
+                onClick={() => navigate('/Home')}
+                className="hover:text-white transition cursor-pointer"
+              >
                 Home
               </li>
-              <li className="hover:text-white transition cursor-pointer">
-                Discover
+              <li
+                onClick={() => navigate('/movies/discover')}
+                className="hover:text-white transition cursor-pointer"
+              >
+                Discover Movies
               </li>
-              <li className="hover:text-white transition cursor-pointer">
-                Top Rated
+              <li
+                onClick={() => navigate('/tvshow/discover')}
+                className="hover:text-white transition cursor-pointer"
+              >
+                Top Rated Tvshows
               </li>
             </ul>
           </div>
 
-          {/* API Credit */}
           <div>
             <h3 className="text-white font-medium mb-3">About</h3>
             <p>

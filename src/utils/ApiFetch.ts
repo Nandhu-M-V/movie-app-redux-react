@@ -18,7 +18,18 @@ export interface Movie {
   id: number;
   title: string;
   poster_path: string;
+  backdrop_path: string;
   overview: string;
+}
+
+export interface TvShow {
+  id: number;
+  name: string;
+  poster_path: string;
+  backdrop_path: string;
+  overview: string;
+  first_air_date: string;
+  vote_average: number;
 }
 
 export const getDiscoverMovies = async (): Promise<Movie[]> => {
@@ -34,8 +45,8 @@ export const getDiscoverMovies = async (): Promise<Movie[]> => {
   return res.data.results;
 };
 
-export const getDiscoverTvShows = async (): Promise<Movie[]> => {
-  const res = await tmdbApi.get('/discover/movie', {
+export const getDiscoverTvShows = async (): Promise<TvShow[]> => {
+  const res = await tmdbApi.get('/discover/tv', {
     params: {
       include_video: false,
       language: 'en-US',

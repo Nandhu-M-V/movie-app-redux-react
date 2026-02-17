@@ -1,4 +1,4 @@
-export interface Movie {
+export interface BaseMedia {
   id: number;
   title?: string;
   name?: string;
@@ -12,14 +12,16 @@ export interface Movie {
 
 const IMAGE_BASE_URL = 'https://image.tmdb.org/t/p/w500';
 
-const HomeCards = ({ movie }: { movie: Movie }) => {
+const TvShowCard = ({ movie }: { movie: BaseMedia }) => {
   const displayTitle = movie.title || movie.name;
   const displayDate = movie.release_date || movie.first_air_date;
 
   return (
     <div
-      className="group relative w-40 h-65 snap-start ml-4
-                 rounded-lg overflow-hidden transform transition-all duration-500 hover:scale-115 hover:-translate-y-1
+      className="group relative w-62 h-95 snap-start
+                 rounded-2xl overflow-hidden
+                 transform transition-all duration-500
+                 hover:scale-105 hover:-translate-y-1
                  hover:shadow-2xl hover:shadow-black/40"
     >
       <img
@@ -32,9 +34,9 @@ const HomeCards = ({ movie }: { movie: Movie }) => {
         className="absolute inset-0 bg-black/80
                    opacity-0 group-hover:opacity-100
                    transition-opacity duration-500
-                   flex flex-col justify-end  p-4 text-white"
+                   flex flex-col justify-end p-4 text-white"
       >
-        <h3 className=" font-bold text-lg">{displayTitle}</h3>
+        <h3 className="font-bold text-lg">{displayTitle}</h3>
 
         {displayDate && <p className="text-sm text-gray-300">{displayDate}</p>}
 
@@ -48,4 +50,4 @@ const HomeCards = ({ movie }: { movie: Movie }) => {
   );
 };
 
-export default HomeCards;
+export default TvShowCard;
