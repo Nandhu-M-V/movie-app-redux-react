@@ -1,19 +1,24 @@
+import Search from './Search';
+
 const IMAGE_BANNER_URL = 'https://image.tmdb.org/t/p/original';
 
 const HomeBanner = ({ backdrop }: { backdrop: string }) => {
   return (
-    <div className="relative -left-10 z-0 w-full h-185 overflow-hidden">
-      <img
-        src={`${IMAGE_BANNER_URL}${backdrop}`}
-        className="w-full h-full object-cover rounded-4xl"
-        alt="movie backdrop"
-      />
+    <>
+      <Search />
+      <div className="relative scale-110 -left-10 z-0 w-full h-185 overflow-hidden">
+        <img
+          src={`${IMAGE_BANNER_URL}${backdrop}`}
+          className="w-full h-full object-cover object-[center_10%] rounded-4xl"
+          alt="movie backdrop"
+        />
 
-      <div className="absolute inset-0 bg-black/35" />
+        <div className="absolute inset-0 bg-black/35" />
 
-      <div className="absolute inset-0 bg-linear-to-t from-black via-transparent to-transparent" />
-      <div className="absolute inset-0 bg-linear-to-b from-black/40 via-transparent to-transparent" />
-    </div>
+        <div className="absolute inset-0 bg-linear-to-t from-black via-transparent to-transparent" />
+        <div className="absolute inset-0 bg-linear-to-b from-black/40 via-transparent to-transparent" />
+      </div>
+    </>
   );
 };
 

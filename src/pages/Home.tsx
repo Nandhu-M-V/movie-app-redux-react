@@ -54,7 +54,7 @@ const Home = () => {
         <HomeBanner backdrop={randomMovie.backdrop_path} />
       )}
 
-      <h2 className="font-extrabold py-4 text-4xl">Movies</h2>
+      <h2 className="font-extrabold relative z-10 pb-4 text-4xl">Movies</h2>
 
       <div
         className="

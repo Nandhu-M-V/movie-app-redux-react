@@ -1,18 +1,14 @@
-export interface Movie {
-  id: number;
-  title: string;
-  poster_path: string | null;
-  backdrop_path?: string | null;
-  overview: string;
-  release_date?: string;
-  vote_average?: number;
-}
+import type { BaseMedia } from './TvShowCard';
+
+import { useNavigate } from 'react-router-dom';
 
 const IMAGE_BASE_URL = 'https://image.tmdb.org/t/p/w500';
 
-const MovieCard = ({ movie }: { movie: Movie }) => {
+const MovieCard = ({ movie }: { movie: BaseMedia }) => {
+  const navigate = useNavigate();
   return (
     <div
+      onClick={() => navigate(`/movie/${movie.id}`)}
       className="group relative w-62 h-95 snap-start
                  rounded-2xl overflow-hidden
                  transform transition-all duration-500

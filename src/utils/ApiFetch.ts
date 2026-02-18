@@ -57,3 +57,8 @@ export const getDiscoverTvShows = async (): Promise<TvShow[]> => {
 
   return res.data.results;
 };
+
+export const fetchShownum = async (id: string): Promise<Movie[]> => {
+  const res = await tmdbApi.get(`/tv/${id}?language=en-US`);
+  return res.data.results;
+};
