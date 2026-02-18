@@ -1,5 +1,8 @@
 import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
+import Loading from '@/components/Loading';
+
+import { fetchMovieid } from '@/utils/ApiFetch';
 
 interface Genre {
   id: number;
@@ -12,7 +15,7 @@ interface ProductionCompany {
   logo_path: string | null;
 }
 
-interface MovieDetailType {
+export interface MovieDetailType {
   id: number;
   title: string;
   overview: string;
@@ -26,8 +29,6 @@ interface MovieDetailType {
   production_companies: ProductionCompany[];
 }
 
-const API_KEY = import.meta.env.VITE_TMDB_ACCESS_TOKEN;
-
 const MovieDetail = () => {
   const { id } = useParams();
   const [movie, setMovie] = useState<MovieDetailType | null>(null);
@@ -36,40 +37,34 @@ const MovieDetail = () => {
   useEffect(() => {
     if (!id) return;
 
-    const fetchMovie = async () => {
+    const getShow = async () => {
       try {
         setLoading(true);
-
-        const res = await fetch(
-          `https://api.themoviedb.org/3/movie/${id}?language=en-US`,
-          {
-            headers: {
-              Authorization: `Bearer ${API_KEY}`,
-              accept: 'application/json',
-            },
-          }
-        );
-
-        const data = await res.json();
+        const data = await fetchMovieid(id);
         setMovie(data);
       } catch (error) {
         console.error(error);
+        setMovie(null);
       } finally {
         setLoading(false);
       }
     };
 
-    fetchMovie();
+    getShow();
   }, [id]);
 
-  if (loading) return <div className="text-white p-10">Loading...</div>;
-  if (!movie) return <div className="text-white p-10">Movie not found</div>;
+  if (loading) return <Loading />;
+  if (!movie)
+    return (
+      <div className="text-white text-4xl absolute z-10 p-10">
+        Movie not found!!
+      </div>
+    );
 
   const year = movie.release_date?.split('-')[0];
 
   return (
     <div className="text-white bg-black min-h-screen">
-      {/* Hero */}
       <div
         className="relative h-[70vh] bg-cover bg-center"
         style={{
@@ -79,7 +74,6 @@ const MovieDetail = () => {
         <div className="absolute inset-0 bg-linear-to-t from-black via-black/70 to-transparent" />
       </div>
 
-      {/* Content */}
       <div className="relative -mt-40 px-6 md:px-16 flex flex-col md:flex-row gap-10">
         <img
           src={`https://image.tmdb.org/t/p/w500${movie.poster_path}`}

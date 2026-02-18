@@ -1,5 +1,8 @@
 import axios from 'axios';
 
+import type { TvDetailType } from '@/pages/TvDetail';
+import type { MovieDetailType } from '@/pages/MovieDetails';
+
 const token = import.meta.env.VITE_TMDB_ACCESS_TOKEN;
 
 if (!token) {
@@ -58,7 +61,18 @@ export const getDiscoverTvShows = async (): Promise<TvShow[]> => {
   return res.data.results;
 };
 
-export const fetchShownum = async (id: string): Promise<Movie[]> => {
-  const res = await tmdbApi.get(`/tv/${id}?language=en-US`);
-  return res.data.results;
+export const fetchShowid = async (id: string): Promise<TvDetailType> => {
+  const res = await tmdbApi.get(`/tv/${id}`, {
+    params: { language: 'en-US' },
+  });
+
+  return res.data;
+};
+
+export const fetchMovieid = async (id: string): Promise<MovieDetailType> => {
+  const res = await tmdbApi.get(`/movie/${id}`, {
+    params: { language: 'en-US' },
+  });
+
+  return res.data;
 };

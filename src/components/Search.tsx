@@ -1,5 +1,7 @@
 import { useState, useRef, useEffect } from 'react';
 
+import { useNavigate } from 'react-router-dom';
+
 import './styles/styles.css';
 
 import type { BaseMedia } from './TvShowCard';
@@ -12,6 +14,8 @@ const Search = () => {
   const [loading, setLoading] = useState(false);
 
   const searchRef = useRef<HTMLDivElement>(null);
+
+  const navigate = useNavigate();
 
   const fetchMovies = async () => {
     if (!query.trim()) {
@@ -50,6 +54,14 @@ const Search = () => {
     fetchMovies();
   };
 
+  const handleSelect = (type: string, id: number) => {
+    if (type.toLowerCase() === 'movie') {
+      navigate(`/movie/${id}`);
+    } else if (type.toLowerCase() === 'tv') {
+      navigate(`/tv/${id}`);
+    }
+  };
+
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
       if (
@@ -70,7 +82,7 @@ const Search = () => {
   return (
     <div
       ref={searchRef}
-      className="absolute left-1/2 top-1/3 -translate-x-1/2 z-20 w-[90vw] max-w-5xl"
+      className="absolute right-0 top-3 -translate-x-1/2 z-20 w-[90vw] max-w-2xl"
     >
       <div className="relative">
         <input
@@ -88,8 +100,7 @@ const Search = () => {
 
         <button
           onClick={handleClick}
-          style={{ boxShadow: 'rgb(0, 0, 0,) -10px 5px 15px' }}
-          className="relative bottom-14.5 transition-all duration-400 left-223 font-bold active:translate-y-1 bg-purple-700 rounded-full px-10 p-3.5"
+          className="relative bottom-14.5 transition-all duration-200 left-135 text-white shadow-xs shadow-black hover:bg-purple-800 font-bold bg-purple-700 rounded-full px-10 p-4"
         >
           search
         </button>
@@ -105,6 +116,7 @@ const Search = () => {
         <div className=" bg-black/90 backdrop-blur-lg relative bottom-11 rounded-xl max-h-96 overflow-y-auto shadow-2xl border border-gray-800">
           {results.slice(0, 8).map((item) => (
             <div
+              onClick={() => handleSelect(item.media_type || 'movie', item.id)}
               key={item.id}
               className="flex items-center gap-4 p-3 hover:bg-gray-800 transition cursor-pointer"
             >

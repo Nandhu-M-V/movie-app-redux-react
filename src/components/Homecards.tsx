@@ -1,3 +1,5 @@
+import { useNavigate } from 'react-router-dom';
+
 export interface Movie {
   id: number;
   title?: string;
@@ -16,8 +18,11 @@ const HomeCards = ({ movie }: { movie: Movie }) => {
   const displayTitle = movie.title || movie.name;
   const displayDate = movie.release_date || movie.first_air_date;
 
+  const navigate = useNavigate();
+
   return (
     <div
+      onClick={() => navigate(`/movie/${movie.id}`)}
       className="group relative w-40 h-65 snap-start ml-4
                  rounded-lg overflow-hidden transform transition-all duration-500 hover:scale-115 hover:-translate-y-1
                  hover:shadow-2xl hover:shadow-black/40"
@@ -29,6 +34,7 @@ const HomeCards = ({ movie }: { movie: Movie }) => {
       />
 
       <div
+        onClick={() => navigate(`/tv/${movie.id}`)}
         className="absolute inset-0 bg-black/80
                    opacity-0 group-hover:opacity-100
                    transition-opacity duration-500

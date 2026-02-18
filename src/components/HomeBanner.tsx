@@ -1,11 +1,8 @@
-import Search from './Search';
-
 const IMAGE_BANNER_URL = 'https://image.tmdb.org/t/p/original';
 
 const HomeBanner = ({ backdrop }: { backdrop: string }) => {
   return (
     <>
-      <Search />
       <div className="relative scale-110 -left-10 z-0 w-full h-185 overflow-hidden">
         <img
           src={`${IMAGE_BANNER_URL}${backdrop}`}

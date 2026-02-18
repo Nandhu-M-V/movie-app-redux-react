@@ -1,14 +1,14 @@
 import { fetchMovies } from '../features/movies/movieSlice';
 import { fetchTvShows } from '@/features/Tvshows/tvshowSlice';
 import type { AppDispatch, RootState } from '../app/store';
-// import MovieCard from '../components/MovieCard';
-// // import HeroBanner from '../components/HeroBanner';
 import HomeBanner from '@/components/HomeBanner';
 import Loading from '@/components/Loading';
 
 import { useDispatch, useSelector } from 'react-redux';
-import { useEffect, useRef } from 'react';
+import { useEffect } from 'react';
 import HomeCards from '@/components/Homecards';
+
+import { random } from '@/utils/random';
 
 const Home = () => {
   const dispatch = useDispatch<AppDispatch>();
@@ -29,12 +29,10 @@ const Home = () => {
     dispatch(fetchTvShows());
   }, [dispatch]);
 
-  const randomSeed = useRef(Math.random());
+  const randomSeed = random;
 
   const randomMovie =
-    movies.length > 0
-      ? movies[Math.floor(randomSeed.current * movies.length)]
-      : null;
+    movies.length > 0 ? movies[Math.floor(randomSeed * movies.length)] : null;
 
   if (loading) return <Loading />;
   if (loading1) return <Loading />;

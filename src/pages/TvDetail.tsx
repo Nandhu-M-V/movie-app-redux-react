@@ -1,5 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
+import Loading from '@/components/Loading';
+import { fetchShowid } from '@/utils/ApiFetch';
 
 interface Genre {
   id: number;
@@ -26,7 +28,7 @@ interface Season {
   episode_count: number;
 }
 
-interface TvDetailType {
+export interface TvDetailType {
   id: number;
   name: string;
   overview: string;
@@ -44,8 +46,6 @@ interface TvDetailType {
   seasons: Season[];
 }
 
-const API_KEY = import.meta.env.VITE_TMDB_ACCESS_TOKEN;
-
 const TvDetail = () => {
   const { id } = useParams();
   const [show, setShow] = useState<TvDetailType | null>(null);
@@ -54,31 +54,23 @@ const TvDetail = () => {
   useEffect(() => {
     if (!id) return;
 
-    const fetchShow = async () => {
+    const getShow = async () => {
       try {
-        const res = await fetch(
-          `https://api.themoviedb.org/3/tv/${id}?language=en-US`,
-          {
-            headers: {
-              Authorization: `Bearer ${API_KEY}`,
-              accept: 'application/json',
-            },
-          }
-        );
-
-        const data = await res.json();
+        setLoading(true);
+        const data = await fetchShowid(id);
         setShow(data);
       } catch (error) {
         console.error(error);
+        setShow(null);
       } finally {
         setLoading(false);
       }
     };
 
-    fetchShow();
+    getShow();
   }, [id]);
 
-  if (loading) return <div className="text-white p-10">Loading...</div>;
+  if (loading) return <Loading />;
   if (!show) return <div className="text-white p-10">Show not found</div>;
 
   const year = show.first_air_date?.split('-')[0];
