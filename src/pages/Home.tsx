@@ -4,6 +4,8 @@ import type { AppDispatch, RootState } from '../app/store';
 import HomeBanner from '@/components/HomeBanner';
 import Loading from '@/components/Loading';
 
+import { useAuth0 } from '@auth0/auth0-react';
+
 import { useDispatch, useSelector } from 'react-redux';
 import { useEffect } from 'react';
 import HomeCards from '@/components/Homecards';
@@ -22,6 +24,14 @@ const Home = () => {
     (state: RootState) => state.tvshow
   );
 
+  const { user } = useAuth0();
+
+  useEffect(() => {
+    if (user) {
+      console.log('USER OBJECT:', user);
+    }
+  }, [user]);
+
   useEffect(() => {
     dispatch(fetchMovies());
   }, [dispatch]);
@@ -37,7 +47,7 @@ const Home = () => {
   if (loading) return <Loading />;
   if (loading1) return <Loading />;
   if (error) return <p className="text-red-500">{error}</p>;
-  if (error1) return <p className="text-red-500">{error}</p>;
+  if (error1) return <p className="text-red-500">{error1}</p>;
 
   return (
     <div className=" min-h-screen pl-20 text-white">
@@ -67,7 +77,7 @@ const Home = () => {
       >
         {movies.map((movie) => (
           <div key={movie.id} className="snap-start">
-            <HomeCards movie={movie} />
+            <HomeCards movie={movie} mediaType="movie" />
           </div>
         ))}
       </div>
@@ -88,7 +98,7 @@ const Home = () => {
       >
         {tvShows.map((movie) => (
           <div key={movie.id} className="snap-start">
-            <HomeCards movie={movie} />
+            <HomeCards movie={movie} mediaType="tv" />
           </div>
         ))}
       </div>

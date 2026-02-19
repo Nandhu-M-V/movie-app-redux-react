@@ -17,6 +17,11 @@ export const tmdbApi = axios.create({
   },
 });
 
+export interface Genre {
+  id: number;
+  name: string;
+}
+
 export interface Movie {
   id: number;
   title: string;
@@ -35,12 +40,17 @@ export interface TvShow {
   vote_average: number;
 }
 
-export const getDiscoverMovies = async (): Promise<Movie[]> => {
+export const fetchMovieGenres = async (): Promise<Genre[]> => {
+  const res = await tmdbApi.get('/genre/movie/list');
+  return res.data.genres;
+};
+
+export const getDiscoverMovies = async (page = 1): Promise<Movie[]> => {
   const res = await tmdbApi.get('/discover/movie', {
     params: {
       include_video: false,
       language: 'en-US',
-      page: 1,
+      page,
       sort_by: 'popularity.desc',
     },
   });
@@ -48,12 +58,12 @@ export const getDiscoverMovies = async (): Promise<Movie[]> => {
   return res.data.results;
 };
 
-export const getDiscoverTvShows = async (): Promise<TvShow[]> => {
+export const getDiscoverTvShows = async (page = 1): Promise<TvShow[]> => {
   const res = await tmdbApi.get('/discover/tv', {
     params: {
       include_video: false,
       language: 'en-US',
-      page: 1,
+      page,
       sort_by: 'popularity.desc',
     },
   });

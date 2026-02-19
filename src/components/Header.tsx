@@ -10,11 +10,13 @@ import LogoutButton from './login-signup/LogoutButton';
 import { useEffect, useState } from 'react';
 
 const Header = () => {
-  const { isAuthenticated, isLoading, error } = useAuth0();
+  const { isAuthenticated, isLoading, error, user } = useAuth0();
 
   const [showSearch, setShowSearch] = useState<boolean>(false);
 
   const navigate = useNavigate();
+
+  const roles = user?.['http://localhost:5002/roles'];
 
   const [offset, setOffset] = useState(0);
 
@@ -95,9 +97,12 @@ const Header = () => {
           <span className="loader"></span>
         </div>
       ) : (
-        <div className="ml-auto">
-          {isAuthenticated ? <LogoutButton /> : <LoginButton />}
-        </div>
+        <>
+          <div className="ml-auto">
+            {isAuthenticated ? <LogoutButton /> : <LoginButton />}
+          </div>
+          <p>Roles: {roles?.join(', ')}</p>
+        </>
       )}
     </header>
   );

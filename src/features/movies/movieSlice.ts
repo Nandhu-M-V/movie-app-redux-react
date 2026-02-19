@@ -21,11 +21,10 @@ const initialState: MovieState = {
   error: '',
 };
 
-// Async thunk
 export const fetchMovies = createAsyncThunk<Movie[]>(
   'movie/fetchMovies',
   async () => {
-    const response = await getDiscoverMovies();
+    const response = await getDiscoverMovies(3);
     return response;
   }
 );
