@@ -1,13 +1,18 @@
 import { useLocation, useNavigate } from 'react-router-dom';
 import { FaSearch } from 'react-icons/fa';
+import { useAuth0 } from '@auth0/auth0-react';
 import Search from './Search';
+import './styles/styles.css';
+
+import LoginButton from './login-signup/LoginButton';
+import LogoutButton from './login-signup/LogoutButton';
 
 import { useEffect, useState } from 'react';
 
 const Header = () => {
-  const [showSearch, setShowSearch] = useState<boolean>(false);
+  const { isAuthenticated, isLoading, error } = useAuth0();
 
-  console.log(showSearch);
+  const [showSearch, setShowSearch] = useState<boolean>(false);
 
   const navigate = useNavigate();
 
@@ -82,9 +87,18 @@ const Header = () => {
       >
         <FaSearch />
       </button>
-      <button className=" absolute top-4 rounded-2xl shadow-xs shadow-black hover:bg-purple-800 text-gray-300 hover:text-white font-bold bg-purple-700 px-8 py-3 right-15">
-        login
-      </button>
+
+      {error && <div className="text-red-700"> Authentication Error</div>}
+
+      {isLoading ? (
+        <div className="z-20">
+          <span className="loader"></span>
+        </div>
+      ) : (
+        <div className="ml-auto">
+          {isAuthenticated ? <LogoutButton /> : <LoginButton />}
+        </div>
+      )}
     </header>
   );
 };
