@@ -14,8 +14,8 @@ const TvShows = () => {
   );
 
   useEffect(() => {
-    dispatch(fetchTvShows());
-  }, [dispatch]);
+    if (tvShows.length === 0) dispatch(fetchTvShows());
+  }, [dispatch, tvShows.length]);
 
   if (loading1) return <Loading />;
   if (error1) return <p className="text-red-500">{error1}</p>;

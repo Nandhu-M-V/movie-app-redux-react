@@ -1,12 +1,14 @@
 @import 'tailwindcss';
-@import "tw-animate-css";
-@import "shadcn/tailwind.css";
+@import 'tw-animate-css';
+@import 'shadcn/tailwind.css';
 
-@custom-variant dark (&:is(.dark *));
-
-body {
-  background: #000;
-}
+@custom-variant dark (&:where(.dark, .dark *));
+/*
+* {
+  transition:
+    background-color 0.3s ease,
+    color 0.3s ease;
+} */
 
 @theme inline {
   --radius-sm: calc(var(--radius) - 4px);

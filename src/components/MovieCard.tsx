@@ -1,20 +1,19 @@
-export interface Movie {
-  id: number;
-  title: string;
-  poster_path: string | null;
-  backdrop_path?: string | null;
-  overview: string;
-  release_date?: string;
-  vote_average?: number;
-}
+import type { BaseMedia } from './TvShowCard';
+import { useNavigate } from 'react-router-dom';
 
 const IMAGE_BASE_URL = 'https://image.tmdb.org/t/p/w500';
 
-const MovieCard = ({ movie }: { movie: Movie }) => {
+const MovieCard = ({ movie }: { movie: BaseMedia }) => {
+  const navigate = useNavigate();
+
+  const displayTitle = movie.title ?? movie.name ?? 'Untitled';
+
   return (
     <div
+      onClick={() => navigate(`/movie/${movie.id}`)}
       className="group relative w-62 h-95 snap-start
                  rounded-2xl overflow-hidden
+                 cursor-pointer
                  transform transition-all duration-500
                  hover:scale-105 hover:-translate-y-1
                  hover:shadow-2xl hover:shadow-black/40"
@@ -22,7 +21,7 @@ const MovieCard = ({ movie }: { movie: Movie }) => {
       <img
         className="w-full h-full object-cover"
         src={movie.poster_path ? `${IMAGE_BASE_URL}${movie.poster_path}` : ''}
-        alt={movie.title}
+        alt={displayTitle}
       />
 
       <div
@@ -31,13 +30,13 @@ const MovieCard = ({ movie }: { movie: Movie }) => {
                    transition-opacity duration-500
                    flex flex-col justify-end p-4 text-white"
       >
-        <h3 className="font-bold text-lg">{movie.title}</h3>
+        <h3 className="font-bold text-lg">{displayTitle}</h3>
 
         {movie.release_date && (
           <p className="text-sm text-gray-300">{movie.release_date}</p>
         )}
 
-        {movie.vote_average && (
+        {movie.vote_average !== undefined && (
           <p className="text-sm text-yellow-400">
             ⭐ {movie.vote_average.toFixed(1)}
           </p>

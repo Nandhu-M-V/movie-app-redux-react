@@ -5,10 +5,13 @@ export interface BaseMedia {
   poster_path: string | null;
   backdrop_path?: string | null;
   overview: string;
+  media_type?: string;
   release_date?: string;
   first_air_date?: string;
   vote_average?: number;
 }
+
+import { useNavigate } from 'react-router-dom';
 
 const IMAGE_BASE_URL = 'https://image.tmdb.org/t/p/w500';
 
@@ -16,8 +19,11 @@ const TvShowCard = ({ movie }: { movie: BaseMedia }) => {
   const displayTitle = movie.title || movie.name;
   const displayDate = movie.release_date || movie.first_air_date;
 
+  const navigate = useNavigate();
+
   return (
     <div
+      onClick={() => navigate(`/tv/${movie.id}`)}
       className="group relative w-62 h-95 snap-start
                  rounded-2xl overflow-hidden
                  transform transition-all duration-500
