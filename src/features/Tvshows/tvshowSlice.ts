@@ -1,4 +1,5 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
+import type { PayloadAction } from '@reduxjs/toolkit';
 import { getDiscoverTvShows } from '../../utils/ApiFetch';
 
 export interface TvShow {
@@ -7,8 +8,9 @@ export interface TvShow {
   poster_path: string;
   backdrop_path: string;
   overview: string;
-  first_air_date: string;
-  vote_average: number;
+  first_air_date?: string;
+  vote_average?: number;
+  tagline?: string;
 }
 
 interface TvShowState {
@@ -23,7 +25,6 @@ const initialState: TvShowState = {
   error1: '',
 };
 
-// Async thunk
 export const fetchTvShows = createAsyncThunk<TvShow[]>(
   'tvShow/fetchTvShows',
   async () => {
@@ -35,7 +36,27 @@ export const fetchTvShows = createAsyncThunk<TvShow[]>(
 const tvSlice = createSlice({
   name: 'tvshow',
   initialState,
-  reducers: {},
+  reducers: {
+    updateTvShow: (
+      state,
+      action: PayloadAction<{
+        id: number;
+        name: string;
+        overview: string;
+        vote_average: number;
+        first_air_date: string;
+      }>
+    ) => {
+      const show = state.tvShows.find((tv) => tv.id === action.payload.id);
+
+      if (show) {
+        show.name = action.payload.name;
+        show.overview = action.payload.overview;
+        show.vote_average = action.payload.vote_average;
+        show.first_air_date = action.payload.first_air_date;
+      }
+    },
+  },
 
   extraReducers: (builder) => {
     builder
@@ -53,5 +74,7 @@ const tvSlice = createSlice({
       });
   },
 });
+
+export const { updateTvShow } = tvSlice.actions;
 
 export default tvSlice.reducer;

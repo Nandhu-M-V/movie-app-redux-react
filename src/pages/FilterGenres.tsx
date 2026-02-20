@@ -3,7 +3,11 @@ import type { AppDispatch, RootState } from '@/app/store';
 import { fetchGenres } from '@/features/genres/genreSlice';
 import { useEffect } from 'react';
 
-const FilterGenres = () => {
+interface Props {
+  onSelect: (id: number, name: string) => void;
+}
+
+const FilterGenres = ({ onSelect }: Props) => {
   const dispatch = useDispatch<AppDispatch>();
   const { genres, genreLoading } = useSelector(
     (state: RootState) => state.genre
@@ -13,15 +17,21 @@ const FilterGenres = () => {
     dispatch(fetchGenres());
   }, [dispatch]);
 
-  if (genreLoading) return <p>Loading...</p>;
-
   return (
-    <div>
-      {genres.map((genre) => (
-        <span className="text-2xl text-white font-bold" key={genre.id}>
-          {genre.name}
-        </span>
-      ))}
+    <div className="absolute top-20 left-140 mt-2 w-52 bg-gray-900 rounded-lg shadow-lg max-h-60 overflow-y-auto z-50">
+      {genreLoading ? (
+        <p className="p-3 text-gray-300">Loading...</p>
+      ) : (
+        genres.map((genre) => (
+          <div
+            key={genre.id}
+            onClick={() => onSelect(genre.id, genre.name)}
+            className="px-4 py-2 hover:bg-purple-600 cursor-pointer text-white transition-colors"
+          >
+            {genre.name}
+          </div>
+        ))
+      )}
     </div>
   );
 };

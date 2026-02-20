@@ -1,7 +1,8 @@
 import { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 import Loading from '@/components/Loading';
 import { fetchShowid } from '@/utils/ApiFetch';
+import { useAuth0 } from '@auth0/auth0-react';
 
 interface Genre {
   id: number;
@@ -48,8 +49,13 @@ export interface TvDetailType {
 
 const TvDetail = () => {
   const { id } = useParams();
+  const navigate = useNavigate();
+
   const [show, setShow] = useState<TvDetailType | null>(null);
   const [loading, setLoading] = useState(true);
+
+  const { user } = useAuth0();
+  const roles = user?.['http://localhost:5002/roles'];
 
   useEffect(() => {
     if (!id) return;
@@ -57,8 +63,20 @@ const TvDetail = () => {
     const getShow = async () => {
       try {
         setLoading(true);
+
         const data = await fetchShowid(id);
-        setShow(data);
+
+        const stored = localStorage.getItem('editedTvShows');
+        const parsed = stored ? JSON.parse(stored) : {};
+
+        if (parsed[id]) {
+          setShow({
+            ...data,
+            ...parsed[id],
+          });
+        } else {
+          setShow(data);
+        }
       } catch (error) {
         console.error(error);
         setShow(null);
@@ -71,12 +89,14 @@ const TvDetail = () => {
   }, [id]);
 
   if (loading) return <Loading />;
-  if (!show) return <div className="text-white p-10">Show not found</div>;
+
+  if (!show)
+    return <div className="text-white p-10 text-3xl">Show not found</div>;
 
   const year = show.first_air_date?.split('-')[0];
 
   return (
-    <div className="text-white bg-black min-h-screen">
+    <div className="text-white bg-black min-h-screen relative">
       <div
         className="relative h-[70vh] bg-cover bg-center"
         style={{
@@ -93,7 +113,7 @@ const TvDetail = () => {
           className="w-64 rounded-xl shadow-2xl"
         />
 
-        <div className="max-w-3xl">
+        <div className="max-w-3xl relative">
           <h1 className="text-4xl font-bold">{show.name}</h1>
           <p className="text-gray-400 italic mt-2">{show.tagline}</p>
 
@@ -102,7 +122,7 @@ const TvDetail = () => {
             <span>{year}</span>
             <span>{show.number_of_seasons} Seasons</span>
             <span>{show.number_of_episodes} Episodes</span>
-            {show.episode_run_time[0] && (
+            {show.episode_run_time?.[0] && (
               <span>{show.episode_run_time[0]} min</span>
             )}
           </div>
@@ -120,6 +140,20 @@ const TvDetail = () => {
 
           <p className="mt-6 text-gray-300 leading-relaxed">{show.overview}</p>
 
+          <button
+            onClick={(e) => {
+              e.stopPropagation();
+              if (!roles || !roles.includes('Admin')) {
+                alert('You do not have permission to edit this page.');
+                return;
+              }
+              navigate(`/tvshow/edit/${show.id}`);
+            }}
+            className={`absolute bottom-0 right-0 bg-purple-600 hover:bg-purple-700 px-4 py-2 rounded-md text-sm font-semibold transition ${roles && roles.includes('Admin') ? '' : 'opacity-50 cursor-not-allowed'}`}
+          >
+            Edit Show
+          </button>
+
           <div className="mt-6">
             <h3 className="text-lg font-semibold mb-2">Created By</h3>
             <div className="flex gap-6 flex-wrap">
@@ -131,7 +165,7 @@ const TvDetail = () => {
             </div>
           </div>
 
-          <div className="flex gap-6 mt-6 items-center">
+          <div className="flex gap-6 mt-6 items-center flex-wrap">
             {show.networks.map(
               (network) =>
                 network.logo_path && (
@@ -147,7 +181,7 @@ const TvDetail = () => {
         </div>
       </div>
 
-      <div className="px-6 md:px-16 mt-16">
+      <div className="px-6 md:px-16 mt-16 pb-20">
         <h2 className="text-2xl font-bold mb-6">Seasons</h2>
 
         <div className="flex gap-6 overflow-x-auto pb-4">

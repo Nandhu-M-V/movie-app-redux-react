@@ -40,6 +40,12 @@ export interface TvShow {
   vote_average: number;
 }
 
+export interface SimilarMovie {
+  id: number;
+  title: string;
+  poster_path: string;
+}
+
 export const fetchMovieGenres = async (): Promise<Genre[]> => {
   const res = await tmdbApi.get('/genre/movie/list');
   return res.data.genres;
@@ -85,4 +91,14 @@ export const fetchMovieid = async (id: string): Promise<MovieDetailType> => {
   });
 
   return res.data;
+};
+
+export const fetchSimilarMovies = async (
+  id: string
+): Promise<SimilarMovie[]> => {
+  const res = await tmdbApi.get(`/movie/${id}/similar`, {
+    params: { language: 'en-US', page: 1 },
+  });
+
+  return res.data.results;
 };

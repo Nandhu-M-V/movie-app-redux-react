@@ -1,4 +1,5 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
+import type { PayloadAction } from '@reduxjs/toolkit';
 import { getDiscoverMovies } from '../../utils/ApiFetch';
 
 interface Movie {
@@ -7,6 +8,9 @@ interface Movie {
   poster_path: string;
   backdrop_path: string;
   overview: string;
+  tagline?: string;
+  vote_average?: number;
+  release_date?: string;
 }
 
 interface MovieState {
@@ -32,7 +36,27 @@ export const fetchMovies = createAsyncThunk<Movie[]>(
 const movieSlice = createSlice({
   name: 'movie',
   initialState,
-  reducers: {},
+  reducers: {
+    updateMovie: (
+      state,
+      action: PayloadAction<{
+        id: number;
+        title: string;
+        overview: string;
+        vote_average: number;
+        release_date: string;
+      }>
+    ) => {
+      const movie = state.movies.find((m) => m.id === action.payload.id);
+
+      if (movie) {
+        movie.title = action.payload.title;
+        movie.overview = action.payload.overview;
+        movie.release_date = action.payload.release_date;
+        movie.vote_average = action.payload.vote_average;
+      }
+    },
+  },
 
   extraReducers: (builder) => {
     builder
@@ -50,5 +74,7 @@ const movieSlice = createSlice({
       });
   },
 });
+
+export const { updateMovie } = movieSlice.actions;
 
 export default movieSlice.reducer;

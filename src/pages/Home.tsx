@@ -33,11 +33,16 @@ const Home = () => {
   }, [user]);
 
   useEffect(() => {
-    dispatch(fetchMovies());
-  }, [dispatch]);
+    if (movies.length === 0) {
+      dispatch(fetchMovies());
+    }
+  }, [dispatch, movies.length]);
+
   useEffect(() => {
-    dispatch(fetchTvShows());
-  }, [dispatch]);
+    if (tvShows.length === 0) {
+      dispatch(fetchTvShows());
+    }
+  }, [dispatch, tvShows.length]);
 
   const randomSeed = random;
 

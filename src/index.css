@@ -1,11 +1,13 @@
 @import 'tailwindcss';
-@import "tw-animate-css";
-@import "shadcn/tailwind.css";
+@import 'tw-animate-css';
+@import 'shadcn/tailwind.css';
 
-@custom-variant dark (&:is(.dark *));
+@custom-variant dark (&:where(.dark, .dark *));
 
-body {
-  background: #000;
+* {
+  transition:
+    background-color 0.3s ease,
+    color 0.3s ease;
 }
 
 @theme inline {

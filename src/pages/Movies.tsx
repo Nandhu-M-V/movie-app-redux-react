@@ -14,8 +14,10 @@ const Movies = () => {
   );
 
   useEffect(() => {
-    dispatch(fetchMovies());
-  }, [dispatch]);
+    if (movies.length === 0) {
+      dispatch(fetchMovies());
+    }
+  }, [dispatch, movies.length]);
 
   if (loading) return <Loading />;
   if (error) return <p className="text-red-500">{error}</p>;

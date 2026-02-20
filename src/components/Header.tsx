@@ -8,6 +8,7 @@ import LoginButton from './login-signup/LoginButton';
 import LogoutButton from './login-signup/LogoutButton';
 
 import { useEffect, useState } from 'react';
+import ThemeToggle from './DarkMode';
 
 const Header = () => {
   const { isAuthenticated, isLoading, error, user } = useAuth0();
@@ -35,7 +36,7 @@ const Header = () => {
     <header
       style={{ transform: `translateY(-${offset}px)` }}
       className=" fixed w-full max-w-460 left-10 top-0 px-3 rounded-b-2xl bg-gray-600/50
-      border-b shadow-black/50 shadow-2xl border-purple-700 z-50 backdrop-blur-lg
+      border-b dark:shadow-black/50 dark:shadow-2xl border-purple-700 z-50 backdrop-blur-lg
       transition-transform duration-75 will-change-transform
       "
     >
@@ -72,10 +73,6 @@ const Header = () => {
           </li>
 
           <li className="cursor-pointer p-2 px-3 hover:bg-purple-200 rounded-2xl hover:text-purple-700 transition">
-            Genres
-          </li>
-
-          <li className="cursor-pointer p-2 px-3 hover:bg-purple-200 rounded-2xl hover:text-purple-700 transition">
             More
           </li>
         </ul>
@@ -90,6 +87,10 @@ const Header = () => {
         <FaSearch />
       </button>
 
+      <div className="absolute top-5 right-4">
+        <ThemeToggle />
+      </div>
+
       {error && <div className="text-red-700"> Authentication Error</div>}
 
       {isLoading ? (
@@ -98,10 +99,14 @@ const Header = () => {
         </div>
       ) : (
         <>
-          <div className="ml-auto">
+          <div
+            className="absolute top-4 rounded-2xl shadow-xs
+          shadow-black hover:bg-purple-800 text-gray-300
+           hover:text-white font-bold bg-purple-700 px-8 py-3 right-20"
+          >
             {isAuthenticated ? <LogoutButton /> : <LoginButton />}
+            {user && <p className="">{roles?.join(', ')}</p>}
           </div>
-          <p>Roles: {roles?.join(', ')}</p>
         </>
       )}
     </header>
