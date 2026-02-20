@@ -92,7 +92,7 @@ const MovieDetail = () => {
   const year = movie.release_date?.split('-')[0];
 
   return (
-    <div className="text-white bg-black min-h-screen">
+    <div className="text-white pt-20 bg-black min-h-screen">
       <div
         className="relative h-[70vh] bg-cover bg-center"
         style={{

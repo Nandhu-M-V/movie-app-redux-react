@@ -7,6 +7,7 @@ import MovieDetail from './pages/MovieDetails';
 import TvDetail from './pages/TvDetail';
 import EditMovie from './pages/EditMovies';
 import EditTvShow from './pages/EditTvShows';
+import FilterResultsPage from './pages/Filter';
 
 const App = () => {
   return (
@@ -21,6 +22,7 @@ const App = () => {
           <Route path="tvshow/edit/:id" element={<EditTvShow />} />
           <Route path="movie/:id" element={<MovieDetail />} />
           <Route path="tv/:id" element={<TvDetail />} />
+          <Route path="filter" element={<FilterResultsPage />} />
         </Route>
       </Routes>
     </Router>

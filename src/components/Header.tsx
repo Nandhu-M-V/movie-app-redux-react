@@ -11,13 +11,11 @@ import { useEffect, useState } from 'react';
 import ThemeToggle from './DarkMode';
 
 const Header = () => {
-  const { isAuthenticated, isLoading, error, user } = useAuth0();
+  const { isAuthenticated, isLoading, error } = useAuth0();
 
-  const [showSearch, setShowSearch] = useState<boolean>(false);
+  const [showSearch, setShowSearch] = useState<boolean>(true);
 
   const navigate = useNavigate();
-
-  const roles = user?.['http://localhost:5002/roles'];
 
   const [offset, setOffset] = useState(0);
 
@@ -35,19 +33,19 @@ const Header = () => {
   return (
     <header
       style={{ transform: `translateY(-${offset}px)` }}
-      className=" fixed w-full max-w-460 left-10 top-0 px-3 rounded-b-2xl bg-gray-600/50
+      className=" fixed w-full top-0 px-3  bg-gray-600/50
       border-b dark:shadow-black/50 dark:shadow-2xl border-purple-700 z-50 backdrop-blur-lg
       transition-transform duration-75 will-change-transform
       "
     >
       <div
-        className={` transition-all duration-500 ${showSearch ? '-translate-y-30' : 'translate-y-0'}`}
+        className={` transition-all duration-1000 ${showSearch ? '-translate-y-30' : 'translate-y-0'}`}
       >
         <Search />
       </div>
       <nav
-        className="max-w-7xl
-                      flex gap-24 items-center
+        className="max-w-7xl 
+                      flex gap-20 items-center
                       h-20 text-white"
       >
         <h1
@@ -57,7 +55,7 @@ const Header = () => {
           MovieApp
         </h1>
 
-        <ul className="flex gap-10 text-lg font-semibold">
+        <ul className="flex gap-8 text-lg font-semibold">
           <li
             className={`cursor-pointer p-2 px-3 hover:bg-purple-200 rounded-2xl hover:text-purple-700 transition ${location.pathname === '/movies/discover' ? 'bg-purple-200 text-purple-700 border-2 border-purple-700' : ''} `}
             onClick={() => navigate('/movies/discover')}
@@ -105,7 +103,6 @@ const Header = () => {
            hover:text-white font-bold bg-purple-700 px-8 py-3 right-20"
           >
             {isAuthenticated ? <LogoutButton /> : <LoginButton />}
-            {user && <p className="">{roles?.join(', ')}</p>}
           </div>
         </>
       )}

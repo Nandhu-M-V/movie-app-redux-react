@@ -3,9 +3,7 @@ import { fetchTvShows } from '@/features/Tvshows/tvshowSlice';
 import type { AppDispatch, RootState } from '../app/store';
 import HomeBanner from '@/components/HomeBanner';
 import Loading from '@/components/Loading';
-
 import { useAuth0 } from '@auth0/auth0-react';
-
 import { useDispatch, useSelector } from 'react-redux';
 import { useEffect } from 'react';
 import HomeCards from '@/components/Homecards';
@@ -25,6 +23,7 @@ const Home = () => {
   );
 
   const { user } = useAuth0();
+  const roles = user?.['http://localhost:5002/roles'];
 
   useEffect(() => {
     if (user) {
@@ -56,6 +55,17 @@ const Home = () => {
 
   return (
     <div className=" min-h-screen pl-20 text-white">
+      <h1 className="absolute z-20 top-30 left-30 font-bold text-6xl text-purple-200">
+        Welcome
+        <div>
+          {roles && roles.includes('Admin')
+            ? `Admin ${user?.name} `
+            : user?.name?.includes('@')
+              ? user?.name.split('@')[0].toUpperCase()
+              : user?.name || 'Guest'}
+          !
+        </div>
+      </h1>
       {randomMovie?.backdrop_path && (
         <img
           src={`${IMAGE_BANNER_URL}${randomMovie.backdrop_path}`}
@@ -67,7 +77,9 @@ const Home = () => {
         <HomeBanner backdrop={randomMovie.backdrop_path} />
       )}
 
-      <h2 className="font-extrabold relative z-10 pb-4 text-4xl">Movies</h2>
+      <h2 className="font-extrabold relative z-10 pb-4 text-4xl">
+        Trending Movies
+      </h2>
 
       <div
         className="
@@ -87,7 +99,7 @@ const Home = () => {
         ))}
       </div>
 
-      <h2 className=" font-extrabold py-4 text-4xl">TV Shows</h2>
+      <h2 className=" font-extrabold py-4 text-4xl">Top TV Shows</h2>
 
       <div
         className="

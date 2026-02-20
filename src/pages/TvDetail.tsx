@@ -96,7 +96,7 @@ const TvDetail = () => {
   const year = show.first_air_date?.split('-')[0];
 
   return (
-    <div className="text-white bg-black min-h-screen relative">
+    <div className="text-white bg-black pt-20 min-h-screen relative">
       <div
         className="relative h-[70vh] bg-cover bg-center"
         style={{

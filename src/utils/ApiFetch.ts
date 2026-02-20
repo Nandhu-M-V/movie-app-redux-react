@@ -52,7 +52,7 @@ export const fetchMovieGenres = async (): Promise<Genre[]> => {
 };
 
 export const getDiscoverMovies = async (page = 1): Promise<Movie[]> => {
-  const res = await tmdbApi.get('/discover/movie', {
+  const res = await tmdbApi.get('/trending/movie/week', {
     params: {
       include_video: false,
       language: 'en-US',
@@ -65,7 +65,7 @@ export const getDiscoverMovies = async (page = 1): Promise<Movie[]> => {
 };
 
 export const getDiscoverTvShows = async (page = 1): Promise<TvShow[]> => {
-  const res = await tmdbApi.get('/discover/tv', {
+  const res = await tmdbApi.get('/trending/tv/week', {
     params: {
       include_video: false,
       language: 'en-US',

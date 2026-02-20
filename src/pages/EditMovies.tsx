@@ -49,7 +49,7 @@ const EditMovie = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gray-300 dark:bg-black text-black dark:text-white flex justify-center pt-28 px-6">
+    <div className="min-h-screen bg-gray-300 dark:bg-black text-black transition-all duration-500 dark:text-white flex justify-center pt-28 px-6">
       <div className="w-full max-w-2xl space-y-6">
         <h1 className="text-3xl font-bold text-purple-600">Edit Movie</h1>
 
