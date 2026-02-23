@@ -25,10 +25,10 @@ const initialState: MovieState = {
   error: '',
 };
 
-export const fetchMovies = createAsyncThunk<Movie[]>(
+export const fetchMovies = createAsyncThunk<Movie[], number>(
   'movie/fetchMovies',
-  async () => {
-    const response = await getDiscoverMovies(3);
+  async (page) => {
+    const response = await getDiscoverMovies(page);
     return response;
   }
 );
@@ -66,7 +66,7 @@ const movieSlice = createSlice({
       })
       .addCase(fetchMovies.fulfilled, (state, action) => {
         state.loading = false;
-        state.movies = [...state.movies, ...action.payload];
+        state.movies = action.payload;
       })
       .addCase(fetchMovies.rejected, (state, action) => {
         state.loading = false;

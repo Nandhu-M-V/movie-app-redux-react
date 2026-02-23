@@ -22,16 +22,11 @@ interface CarousalProps {
 
 export default function Carousal({ movies }: CarousalProps) {
   const plugin = React.useRef(
-    Autoplay({ delay: 2000, stopOnInteraction: true })
+    Autoplay({ delay: 4000, stopOnInteraction: true })
   );
 
   return (
-    <Carousel
-      plugins={[plugin.current]}
-      className="w-full"
-      onMouseEnter={plugin.current.stop}
-      onMouseLeave={plugin.current.reset}
-    >
+    <Carousel plugins={[plugin.current]} className="w-full">
       <CarouselContent>
         {movies.map((movie) => (
           <CarouselItem key={movie.id}>
@@ -53,9 +48,9 @@ export default function Carousal({ movies }: CarousalProps) {
                   {movie.title || movie.name}
                 </h2>
               </div>
-              <div className="absolute bottom-15 max-w-200 left-10 text-white">
-                <h2 className="pl-2 cursor-default  text-md text-white">
-                  {movie.overview?.slice(0, 400) + '...'}
+              <div className="absolute  bottom-15 max-w-400 left-10 text-white">
+                <h2 className="pl-2 cursor-default text-md text-white">
+                  {movie?.overview ? movie.overview?.slice(0, 400) + '...' : ''}
                 </h2>
               </div>
             </div>
