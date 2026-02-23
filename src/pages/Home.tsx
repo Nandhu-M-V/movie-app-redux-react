@@ -9,9 +9,12 @@ import { useEffect } from 'react';
 import HomeCards from '@/components/Homecards';
 
 import { random } from '@/utils/random';
+import { useTranslation } from 'react-i18next';
 
 const Home = () => {
   const dispatch = useDispatch<AppDispatch>();
+
+  const { t } = useTranslation();
   const IMAGE_BANNER_URL = 'https://image.tmdb.org/t/p/original';
 
   const { movies, loading, error } = useSelector(
@@ -31,38 +34,33 @@ const Home = () => {
     }
   }, [user]);
 
-  useEffect(() => {
-    if (movies.length === 0) {
-      dispatch(fetchMovies());
-    }
-  }, [dispatch, movies.length]);
+  const name = user?.name || t('guest');
 
   useEffect(() => {
-    if (tvShows.length === 0) {
-      dispatch(fetchTvShows());
+    if (movies.length === 0 || tvShows.length === 0) {
+      dispatch(fetchMovies(1));
+      dispatch(fetchTvShows(1));
     }
-  }, [dispatch, tvShows.length]);
+  }, [dispatch, movies.length, tvShows.length]);
 
   const randomSeed = random;
 
   const randomMovie =
     movies.length > 0 ? movies[Math.floor(randomSeed * movies.length)] : null;
 
-  if (loading) return <Loading />;
-  if (loading1) return <Loading />;
-  if (error) return <p className="text-red-500">{error}</p>;
-  if (error1) return <p className="text-red-500">{error1}</p>;
+  if (loading || loading1) return <Loading />;
+  if (error || error1) return <p className="text-red-500">{error || error1}</p>;
 
   return (
     <div className=" min-h-screen pl-20 text-white">
       <h1 className="absolute z-20 top-30 left-30 font-bold text-6xl text-purple-200">
-        Welcome
+        {t('welcomeUser')}
         <div>
           {roles && roles.includes('Admin')
-            ? `Admin ${user?.name} `
-            : user?.name?.includes('@')
-              ? user?.name.split('@')[0].toUpperCase()
-              : user?.name || 'Guest'}
+            ? `Admin ${name.split('@')[0].toUpperCase()} `
+            : name.includes('@')
+              ? name.split('@')[0].toUpperCase()
+              : name.toUpperCase()}
           !
         </div>
       </h1>
@@ -78,7 +76,7 @@ const Home = () => {
       )}
 
       <h2 className="font-extrabold relative z-10 pb-4 text-4xl">
-        Trending Movies
+        {t('trendingMovies')}
       </h2>
 
       <div
@@ -99,7 +97,7 @@ const Home = () => {
         ))}
       </div>
 
-      <h2 className=" font-extrabold py-4 text-4xl">Top TV Shows</h2>
+      <h2 className=" font-extrabold py-4 text-4xl"> {t('topTvShows')}</h2>
 
       <div
         className="
@@ -107,6 +105,7 @@ const Home = () => {
             grid grid-flow-col auto-cols-[220px]
             gap-1
             overflow-x-auto overflow-y-hidden
+            custom-scrollbar
             scroll-smooth
             snap-x
             scrollbar-hide

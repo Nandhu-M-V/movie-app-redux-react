@@ -25,10 +25,10 @@ const initialState: TvShowState = {
   error1: '',
 };
 
-export const fetchTvShows = createAsyncThunk<TvShow[]>(
+export const fetchTvShows = createAsyncThunk<TvShow[], number>(
   'tvShow/fetchTvShows',
-  async () => {
-    const response = await getDiscoverTvShows();
+  async (page) => {
+    const response = await getDiscoverTvShows(page);
     return response;
   }
 );

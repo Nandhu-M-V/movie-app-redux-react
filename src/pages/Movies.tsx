@@ -2,12 +2,17 @@ import { fetchMovies } from '../features/movies/movieSlice';
 import type { AppDispatch, RootState } from '../app/store';
 import MovieCard from '../components/MovieCard';
 import { useDispatch, useSelector } from 'react-redux';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import Loading from '@/components/Loading';
 import Carousal from '@/components/Carousal';
+import '../utils/i18n';
+import { useTranslation } from 'react-i18next';
 
 const Movies = () => {
   const dispatch = useDispatch<AppDispatch>();
+  const { i18n, t } = useTranslation();
+
+  const [page, setpage] = useState(1);
 
   const { movies, loading, error } = useSelector(
     (state: RootState) => state.movie
@@ -15,9 +20,18 @@ const Movies = () => {
 
   useEffect(() => {
     if (movies.length === 0) {
-      dispatch(fetchMovies());
+      dispatch(fetchMovies(page));
     }
-  }, [dispatch, movies.length]);
+  }, [dispatch, movies.length, page, i18n.language]);
+
+  useEffect(() => {
+    console.log(page);
+  }, [page]);
+
+  function newPage(newpage: number) {
+    setpage(newpage);
+    dispatch(fetchMovies(newpage));
+  }
 
   if (loading) return <Loading />;
   if (error) return <p className="text-red-500">{error}</p>;
@@ -30,6 +44,35 @@ const Movies = () => {
         {movies.map((movie) => (
           <MovieCard key={movie.id} movie={movie} />
         ))}
+      </div>
+
+      <div className="w-full flex justify-center mb-10">
+        <div className="flex items-center gap-4 mt-6">
+          <button
+            onClick={() => newPage(page - 1)}
+            disabled={page === 1}
+            className={`px-4 py-2 rounded-lg font-medium transition-all duration-200
+      ${
+        page === 1
+          ? 'bg-gray-400 cursor-not-allowed opacity-60'
+          : 'bg-purple-700 hover:bg-purple-800 active:scale-95'
+      }
+      text-white shadow-md`}
+          >
+            {t('prev')}
+          </button>
+
+          <span className="text-white font-semibold">Page {page}</span>
+
+          <button
+            onClick={() => newPage(page + 1)}
+            className="px-4 py-2 rounded-lg font-medium bg-purple-700
+               hover:bg-purple-800 active:scale-95
+               text-white shadow-md transition-all duration-200"
+          >
+            {t('next')}
+          </button>
+        </div>
       </div>
     </div>
   );

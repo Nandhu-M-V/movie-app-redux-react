@@ -112,23 +112,23 @@ const FilterResultsPage = () => {
               </div>
             </div>
           ))}
-          <div className="flex justify-center mt-10 gap-4">
-            <button
-              onClick={() => setPage((prev) => Math.max(prev - 1, 1))}
-              className="px-4 py-2 bg-gray-700 rounded"
-            >
-              Previous
-            </button>
+        </div>
+        <div className="flex justify-center mt-10 gap-4">
+          <button
+            onClick={() => setPage((prev) => Math.max(prev - 1, 1))}
+            className="px-4 py-2 bg-gray-700 rounded"
+          >
+            Previous
+          </button>
 
-            <span className="px-4 py-2">Page {page}</span>
+          <span className="px-4 py-2">Page {page}</span>
 
-            <button
-              onClick={() => setPage((prev) => prev + 1)}
-              className="px-4 py-2 bg-purple-600 rounded"
-            >
-              Next
-            </button>
-          </div>
+          <button
+            onClick={() => setPage((prev) => prev + 1)}
+            className="px-4 py-2 bg-purple-600 rounded"
+          >
+            Next
+          </button>
         </div>
 
         {filteredData.length === 0 && !loading && (

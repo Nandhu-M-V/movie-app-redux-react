@@ -80,10 +80,7 @@ const Search = () => {
   }, []);
 
   return (
-    <div
-      ref={searchRef}
-      className="absolute right-0 top-3 -translate-x-1/2 z-20 w-[90vw] max-w-2xl"
-    >
+    <div ref={searchRef} className=" -translate-x-1/2 z-20 w-[90vw] max-w-2xl">
       <div className="relative">
         <input
           type="text"
@@ -113,8 +110,8 @@ const Search = () => {
       )}
 
       {results.length > 0 && (
-        <div className=" bg-black/90 backdrop-blur-lg relative bottom-11 rounded-xl max-h-96 overflow-y-auto shadow-2xl border border-gray-800">
-          {results.slice(0, 8).map((item) => (
+        <div className=" bg-black/90 backdrop-blur-lg absolute top-16 max-w-3xl w-full rounded-xl max-h-96 overflow-y-auto custom-scrollbar shadow-2xl border border-gray-800">
+          {results.slice(0, 15).map((item) => (
             <div
               onClick={() => handleSelect(item.media_type || 'movie', item.id)}
               key={item.id}

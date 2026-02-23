@@ -98,7 +98,7 @@ const TvDetail = () => {
   return (
     <div className="text-white bg-black pt-20 min-h-screen relative">
       <div
-        className="relative h-[70vh] bg-cover bg-center"
+        className="relative h-[70vh] bg-cover bg-top"
         style={{
           backgroundImage: `url(https://image.tmdb.org/t/p/original${show.backdrop_path})`,
         }}
@@ -166,17 +166,19 @@ const TvDetail = () => {
           </div>
 
           <div className="flex gap-6 mt-6 items-center flex-wrap">
-            {show.networks.map(
-              (network) =>
-                network.logo_path && (
-                  <img
-                    key={network.id}
-                    src={`https://image.tmdb.org/t/p/w200${network.logo_path}`}
-                    alt={network.name}
-                    className="h-10 object-contain opacity-80"
-                  />
-                )
-            )}
+            {show.networks
+              .slice(0, 7)
+              .map(
+                (network) =>
+                  network.logo_path && (
+                    <img
+                      key={network.id}
+                      src={`https://image.tmdb.org/t/p/w200${network.logo_path}`}
+                      alt={network.name}
+                      className="h-10 object-contain opacity-80"
+                    />
+                  )
+              )}
           </div>
         </div>
       </div>
