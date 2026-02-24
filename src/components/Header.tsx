@@ -11,6 +11,7 @@ import LogoutButton from './login-signup/LogoutButton';
 import { useEffect, useRef, useState } from 'react';
 import ThemeToggle from './DarkMode';
 import LanguageSwitcher from './LangSwitch';
+import ClearLocalStorageButton from './Clear/ClearLocalStorage';
 
 const Header = () => {
   const [open, setOpen] = useState(false);
@@ -70,14 +71,14 @@ const Header = () => {
         </h1>
         <ul className="flex gap-8 text-lg font-semibold">
           <li
-            className={`cursor-pointer p-2 px-3 hover:bg-purple-200 rounded-2xl hover:text-purple-700 transition ${location.pathname === '/movies/discover' ? 'bg-purple-200 text-purple-700 border-2 border-purple-700' : ''} `}
+            className={`cursor-pointer p-2 px-3 hover:bg-purple-200 border-2 border-purple-50/0 rounded-2xl hover:text-purple-700 transition ${location.pathname === '/movies/discover' ? 'bg-purple-200 text-purple-700 border-2 border-purple-700' : ''} `}
             onClick={() => navigate('/movies/discover')}
           >
             {t('movies')}
           </li>
 
           <li
-            className={`cursor-pointer p-2 px-3 hover:bg-purple-200 rounded-2xl hover:text-purple-700 transition ${location.pathname === '/tvshow/discover' ? 'bg-purple-200 text-purple-700 border-2 border-purple-700' : ''} `}
+            className={`cursor-pointer p-2 px-3 hover:bg-purple-200 border-2 border-purple-50/0 rounded-2xl hover:text-purple-700 transition ${location.pathname === '/tvshow/discover' ? 'bg-purple-200 text-purple-700 border-2 border-purple-700' : ''} `}
             onClick={() => navigate('/tvshow/discover')}
           >
             {t('tvShows')}
@@ -86,34 +87,43 @@ const Header = () => {
           <li ref={dropdownRef} className="relative">
             <div
               onClick={() => setOpen((prev) => !prev)}
-              className="cursor-pointer p-2 px-3 hover:bg-purple-200
+              className="cursor-pointer p-2 px-3 border-2 border-purple-50/0 hover:bg-purple-200
                rounded-2xl hover:text-purple-700 transition"
             >
               {t('more')}
             </div>
 
             {open && (
-              <div
-                className="absolute left-0 mt-2 w-32 bg-purple-700
+              <>
+                <div
+                  className="absolute left-0 mt-2 w-32 bg-purple-700
                     shadow-lg rounded-xl border-2 z-50"
-              >
-                <button
-                  onClick={() => {
-                    navigate('/filter');
-                    setOpen(false);
-                  }}
-                  className="w-full text-left px-4 py-2
-                   hover:bg-purple-200 hover:text-purple-700
-                   transition rounded-xl"
                 >
-                  {t('filter')}
-                </button>
-              </div>
+                  <button
+                    onClick={() => {
+                      navigate('/filter');
+                      setOpen(false);
+                    }}
+                    className="w-full text-left px-4 py-2
+                   hover:bg-purple-200 hover:text-purple-700
+                   transition rounded-md border-b border-purple-900"
+                  >
+                    {t('filter')}
+                  </button>
+                  <div
+                    className="w-full text-left px-4 py-2
+                   hover:bg-purple-200 hover:text-purple-700
+                   transition rounded-md border-b border-purple-900"
+                  >
+                    <ClearLocalStorageButton />
+                  </div>
+                </div>
+              </>
             )}
           </li>
         </ul>
         <div
-          className={` relative left-65 top-7 transition-all duration-1000 ${showSearch ? '-translate-y-30' : 'translate-y-0'}`}
+          className={` relative left-65 top-0 transition-all duration-1000 ${showSearch ? '-translate-y-30' : 'translate-y-0'}`}
         >
           <Search />
         </div>
@@ -128,7 +138,7 @@ const Header = () => {
         <div className="absolute top-5 right-4">
           <ThemeToggle />
         </div>
-        <li className="relative right-50 list-none ">
+        <li className="relative right-46 list-none ">
           <LanguageSwitcher />
         </li>
         {error && <div className="text-red-700">{t('authError')}</div>}
@@ -138,9 +148,9 @@ const Header = () => {
           </div>
         ) : (
           <div
-            className="absolute top-5 rounded-2xl shadow-xs
+            className="absolute top-5 rounded-md shadow-xs
           shadow-black hover:bg-purple-800 text-gray-300
-           hover:text-white font-bold bg-purple-700 px-4 py-2.5 right-20"
+           hover:text-white font-bold bg-purple-700 px-3 py-2 right-20"
           >
             {isAuthenticated ? <LogoutButton /> : <LoginButton />}
           </div>

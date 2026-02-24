@@ -63,6 +63,9 @@ const MovieDetail = () => {
           });
         } else {
           setMovie(data);
+
+          parsed[id] = data;
+          localStorage.setItem('editedMovies', JSON.stringify(parsed));
         }
 
         setSimilar(similarData);
