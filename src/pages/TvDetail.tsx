@@ -4,24 +4,24 @@ import Loading from '@/components/Loading';
 import { fetchShowid } from '@/utils/ApiFetch';
 import { useAuth0 } from '@auth0/auth0-react';
 
-interface Genre {
+export interface Genre {
   id: number;
   name: string;
 }
 
-interface Creator {
+export interface Creator {
   id: number;
   name: string;
   profile_path: string | null;
 }
 
-interface Network {
+export interface Network {
   id: number;
   name: string;
   logo_path: string | null;
 }
 
-interface Season {
+export interface Season {
   id: number;
   name: string;
   poster_path: string | null;
@@ -50,6 +50,7 @@ export interface TvDetailType {
 const TvDetail = () => {
   const { id } = useParams();
   const navigate = useNavigate();
+  const showId = id;
 
   const [show, setShow] = useState<TvDetailType | null>(null);
   const [loading, setLoading] = useState(true);
@@ -58,24 +59,23 @@ const TvDetail = () => {
   const roles = user?.['http://localhost:5002/roles'];
 
   useEffect(() => {
-    if (!id) return;
+    if (!showId) return;
 
     const getShow = async () => {
       try {
         setLoading(true);
 
-        const data = await fetchShowid(id);
-
         const stored = localStorage.getItem('editedTvShows');
         const parsed = stored ? JSON.parse(stored) : {};
 
-        if (parsed[id]) {
-          setShow({
-            ...data,
-            ...parsed[id],
-          });
+        if (parsed[showId]) {
+          setShow(parsed[showId]);
         } else {
+          const data = await fetchShowid(showId);
           setShow(data);
+
+          parsed[showId] = data;
+          localStorage.setItem('editedTvShows', JSON.stringify(parsed));
         }
       } catch (error) {
         console.error(error);
@@ -86,10 +86,9 @@ const TvDetail = () => {
     };
 
     getShow();
-  }, [id]);
+  }, [showId]);
 
   if (loading) return <Loading />;
-
   if (!show)
     return <div className="text-white p-10 text-3xl">Show not found</div>;
 

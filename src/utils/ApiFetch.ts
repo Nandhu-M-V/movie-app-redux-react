@@ -18,9 +18,41 @@ export const tmdbApi = axios.create({
   },
 });
 
+export interface DiscoverMovieFilters {
+  language?: string;
+  sort_by?: string;
+  page?: number;
+  include_adult?: boolean;
+
+  with_genres?: string;
+  primary_release_year?: number;
+
+  'vote_average.gte'?: number;
+  'vote_count.gte'?: number;
+  'with_runtime.gte'?: number;
+  'with_runtime.lte'?: number;
+}
+
+export interface DiscoverMovieResponse {
+  page: number;
+  results: DiscoverMovie[];
+  total_pages: number;
+  total_results: number;
+}
+
 export interface Genre {
   id: number;
   name: string;
+}
+
+export interface DiscoverMovie {
+  id: number;
+  title: string;
+  poster_path: string | null;
+  vote_average: number;
+  vote_count: number;
+  release_date: string;
+  genre_ids: number[];
 }
 
 export interface Movie {
@@ -63,6 +95,21 @@ export const getDiscoverMovies = async (page: number): Promise<Movie[]> => {
   });
 
   return res.data.results;
+};
+
+export const getFilterMovies = async (
+  params: DiscoverMovieFilters
+): Promise<DiscoverMovieResponse> => {
+  const res = await tmdbApi.get('/discover/movie', {
+    params: {
+      language: i18n.language,
+      include_adult: false,
+      sort_by: 'popularity.desc',
+      ...params,
+    },
+  });
+
+  return res.data;
 };
 
 export const getDiscoverTvShows = async (page: number): Promise<TvShow[]> => {

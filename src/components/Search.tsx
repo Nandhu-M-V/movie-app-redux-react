@@ -1,9 +1,5 @@
 import { useState, useRef, useEffect } from 'react';
-
 import { useNavigate } from 'react-router-dom';
-
-import './styles/styles.css';
-
 import type { BaseMedia } from './TvShowCard';
 
 const API_KEY = import.meta.env.VITE_TMDB_ACCESS_TOKEN;
@@ -14,20 +10,21 @@ const Search = () => {
   const [loading, setLoading] = useState(false);
 
   const searchRef = useRef<HTMLDivElement>(null);
-
   const navigate = useNavigate();
+  const debounceRef = useRef<number>(1);
 
-  const fetchMovies = async () => {
-    if (!query.trim()) {
+  const fetchMovies = async (searchQuery: string) => {
+    if (!searchQuery.trim()) {
       setResults([]);
       return;
     }
 
     try {
       setLoading(true);
-
       const res = await fetch(
-        `https://api.themoviedb.org/3/search/multi?query=${query}&include_adult=false&language=en-US&page=1`,
+        `https://api.themoviedb.org/3/search/multi?query=${encodeURIComponent(
+          searchQuery
+        )}&include_adult=false&language=en-US&page=1`,
         {
           headers: {
             Authorization: `Bearer ${API_KEY}`,
@@ -35,26 +32,29 @@ const Search = () => {
           },
         }
       );
-
       const data = await res.json();
-      setResults(data.results || []);
+      setResults(data.results && data.results.length > 0 ? data.results : []);
     } catch (error) {
       console.error(error);
+      setResults([]);
     } finally {
       setLoading(false);
     }
   };
 
-  const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
-    if (e.key === 'Enter') {
-      fetchMovies();
-    }
-  };
-  const handleClick = () => {
-    fetchMovies();
-  };
+  useEffect(() => {
+    if (debounceRef.current) clearTimeout(debounceRef.current);
+
+    debounceRef.current = window.setTimeout(() => {
+      fetchMovies(query);
+    }, 500);
+
+    return () => clearTimeout(debounceRef.current);
+  }, [query]);
 
   const handleSelect = (type: string, id: number) => {
+    setQuery('');
+    setResults([]);
     if (type.toLowerCase() === 'movie') {
       navigate(`/movie/${id}`);
     } else if (type.toLowerCase() === 'tv') {
@@ -71,12 +71,8 @@ const Search = () => {
         setResults([]);
       }
     };
-
     document.addEventListener('mousedown', handleClickOutside);
-
-    return () => {
-      document.removeEventListener('mousedown', handleClickOutside);
-    };
+    return () => document.removeEventListener('mousedown', handleClickOutside);
   }, []);
 
   return (
@@ -87,30 +83,22 @@ const Search = () => {
           placeholder="Search Movies, TV shows..."
           value={query}
           onChange={(e) => setQuery(e.target.value)}
-          onKeyDown={handleKeyDown}
           className="w-full h-15 pl-14 pr-6 rounded-full
                      bg-gray-600/50 backdrop-blur-md border border-gray-700
                      text-white placeholder-gray-400
                      focus:outline-none focus:ring-2 focus:ring-purple-600
                      transition-all duration-300"
         />
-
-        <button
-          onClick={handleClick}
-          className="relative bottom-14.5 transition-all duration-200 left-135 text-white shadow-xs shadow-black hover:bg-purple-800 font-bold bg-purple-700 rounded-full px-10 p-4"
-        >
-          search
-        </button>
       </div>
 
       {loading && (
-        <div className="flex flex-col relative items-center">
+        <div className="flex flex-col relative items-center mt-2">
           <span className="loader"></span>
         </div>
       )}
 
       {results.length > 0 && (
-        <div className=" bg-black/90 backdrop-blur-lg absolute top-16 max-w-3xl w-full rounded-xl max-h-96 overflow-y-auto custom-scrollbar shadow-2xl border border-gray-800">
+        <div className="bg-black/90 backdrop-blur-lg absolute top-16 max-w-3xl w-full rounded-xl max-h-96 overflow-y-auto custom-scrollbar shadow-2xl border border-gray-800">
           {results.slice(0, 15).map((item) => (
             <div
               onClick={() => handleSelect(item.media_type || 'movie', item.id)}
@@ -124,7 +112,6 @@ const Search = () => {
                   className="w-12 rounded-md"
                 />
               )}
-
               <div>
                 <p className="text-white font-medium">
                   {item.title || item.name}
@@ -135,6 +122,12 @@ const Search = () => {
               </div>
             </div>
           ))}
+        </div>
+      )}
+
+      {!loading && query && results.length === 0 && (
+        <div className="absolute top-16 bg-black/90 w-full max-w-3xl rounded-xl text-white p-4">
+          No results found
         </div>
       )}
     </div>
