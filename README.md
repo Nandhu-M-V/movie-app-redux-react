@@ -1,4 +1,4 @@
-# 🎬 Movie Explorer – React + TypeScript
+#  Movie Explorer – React + TypeScript
 
 A modern **Movie & TV Discovery Web App** built using **React, TypeScript, Vite, Tailwind CSS, Redux Toolkit, TMDB API, and Auth0 authentication**.
 
@@ -6,20 +6,20 @@ This application allows users to explore trending movies and TV shows, apply adv
 
 ---
 
-# 🚀 Project Overview
+#  Project Overview
 
 This app integrates with:
 
-- 🎥 The Movie Database (TMDB) – Movie & TV data
-- 🔐 Auth0 – Authentication & RBAC
+-  The Movie Database (TMDB) – Movie & TV data
+-  Auth0 – Authentication & RBAC
 
 The goal of this project is to build a scalable, type-safe, production-ready frontend architecture using modern React practices.
 
 ---
 
-# ✨ Features
+#  Features
 
-## 🎥 Movies
+##  Movies
 - Trending Movies (Weekly)
 - Discover Movies with Advanced Filters:
   - Multi-genre selection
@@ -31,21 +31,21 @@ The goal of this project is to build a scalable, type-safe, production-ready fro
 - Movie Details Page
 - Similar Movie Recommendations
 
-## 📺 TV Shows
+##  TV Shows
 - Trending TV Shows
 - TV Show Details Page
 
-## 🔎 Smart Filtering
+##  Smart Filtering
 - Dynamic filter object builder
 - Fully typed filter interface
 - Pagination support
 - Memo-based client-side search
 
-## 🌍 Internationalization
+##  Internationalization
 - Multi-language support (i18n)
 - API language sync with UI language
 
-## 🔐 Authentication & Authorization
+##  Authentication & Authorization
 - Login / Logout with Auth0
 - JWT-based authentication
 - Role-Based Access Control (RBAC)
@@ -54,7 +54,7 @@ The goal of this project is to build a scalable, type-safe, production-ready fro
 
 ---
 
-# 🏗 Tech Stack
+#  Tech Stack
 
 - React
 - TypeScript
@@ -68,9 +68,9 @@ The goal of this project is to build a scalable, type-safe, production-ready fro
 
 ---
 
-# 📦 Setup & Installation
+#  Setup & Installation
 
-## ✅ Prerequisites
+##  Prerequisites
 
 - Node.js (v18+ recommended)
 - npm or yarn
@@ -79,7 +79,7 @@ The goal of this project is to build a scalable, type-safe, production-ready fro
 
 ---
 
-# 🔑 TMDB Setup
+#  TMDB Setup
 
 1. Create an account at:
    https://www.themoviedb.org/
@@ -97,9 +97,9 @@ VITE_TMDB_ACCESS_TOKEN=your_tmdb_bearer_token
 
 ---
 
-# 🔐 Auth0 Setup (Admin & User Roles)
+#  Auth0 Setup (Admin & User Roles)
 
-## 1️⃣ Create Auth0 Application
+##  Create Auth0 Application
 
 1. Go to:
    https://manage.auth0.com/
@@ -126,7 +126,7 @@ http://localhost:5173
 
 ---
 
-## 2️⃣ Create API in Auth0
+##  Create API in Auth0
 
 Applications → APIs → Create API
 
@@ -140,18 +140,18 @@ Enable:
 
 ---
 
-## 3️⃣ Create Roles
+##  Create Roles
 
 User Management → Roles
 
-### 👤 user
+###  user
 Permissions:
 ```
 read:movies
 read:tv
 ```
 
-### 🛠 admin
+###  admin
 Permissions:
 ```
 read:movies
@@ -162,13 +162,13 @@ manage:users
 
 ---
 
-## 4️⃣ Assign Roles to Users
+##  Assign Roles to Users
 
 User Management → Users → Assign Role
 
 ---
 
-## 5️⃣ Add Custom Claim (Auth0 Action)
+##  Add Custom Claim (Auth0 Action)
 
 Create Action:
 
@@ -194,7 +194,7 @@ Attach it to Login Flow.
 
 ---
 
-## 6️⃣ Auth0 Environment Variables
+##  Auth0 Environment Variables
 
 Create `.env`:
 
@@ -205,7 +205,7 @@ VITE_AUTH0_CLIENT_ID=your-client-id
 
 ---
 
-# ▶️ Run the Application
+#  Run the Application
 
 Install dependencies:
 
@@ -239,7 +239,7 @@ http://localhost:5173
 
 ---
 
-# 📂 Project Structure
+#  Project Structure
 
 ```
 src/
@@ -254,31 +254,38 @@ src/
 │   ├── movies/
 │   └── tvshows/
 │
-├── auth/
-│   ├── ProtectedRoute.tsx
-│   ├── RoleGuard.tsx
-│   └── useRoles.ts
+├── locales/
+│   ├── en/
+│   ├── hi/
+│   ├── ja/
+│   └── de/
 │
 ├── components/
 │   ├── MovieCard.tsx
 │   ├── TvCard.tsx
 │   ├── Loading.tsx
+│   └── ...
 │
 ├── pages/
 │   ├── Home.tsx
 │   ├── DiscoverMoviesPage.tsx
 │   ├── MovieDetails.tsx
+│   ├── Movies.tsx
 │   ├── TvDetail.tsx
-│   └── AdminDashboard.tsx
-│
-├── i18n.ts
+│   ├── TvShows.tsx
+│   └── Filter.tsx
+│ 
+├── utils/
+│   ├── i18n.ts
+│   └── ApiFetch.ts
+│ 
 ├── main.tsx
 └── vite-env.d.ts
 ```
 
 ---
 
-# 🛡 Role-Based Access Logic
+#  Role-Based Access Logic
 
 Roles are extracted from JWT:
 
@@ -307,7 +314,7 @@ Admin UI example:
 
 ---
 
-# 🧠 Architecture Highlights
+#  Architecture Highlights
 
 - Centralized Axios instance with Bearer authentication
 - Fully typed API responses
@@ -322,7 +329,7 @@ Admin UI example:
 
 ---
 
-# 🔐 Security Notes
+#  Security Notes
 
 - Frontend role checks are for UI only
 - Backend validation required for real production security
@@ -331,21 +338,9 @@ Admin UI example:
 
 ---
 
-# 📈 Future Improvements
-
-- Backend API with JWT verification
-- Infinite scroll
-- Watchlist feature
-- Dark / Light theme toggle
-- Debounced search
-- URL query sync for filters
-- Admin content moderation dashboard
 
 ---
 
-# 📜 License
+#  License
 
-This project is built for educational and portfolio purposes.
-
-Movie data provided by The Movie Database (TMDB)  
-Authentication powered by Auth0
+This project is built for educational purposes.
