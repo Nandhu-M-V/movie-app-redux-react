@@ -17,12 +17,14 @@ interface TvShowState {
   loading1: boolean;
   tvShows: TvShow[];
   error1: string;
+  tvstatus: 'idle' | 'loading' | 'succeeded' | 'failed';
 }
 
 const initialState: TvShowState = {
   loading1: false,
   tvShows: [],
   error1: '',
+  tvstatus: 'idle',
 };
 
 export const fetchTvShows = createAsyncThunk<TvShow[], number>(
@@ -62,14 +64,17 @@ const tvSlice = createSlice({
     builder
       .addCase(fetchTvShows.pending, (state) => {
         state.loading1 = true;
+        state.tvstatus = 'loading';
         state.error1 = '';
       })
       .addCase(fetchTvShows.fulfilled, (state, action) => {
+        state.tvstatus = 'succeeded';
         state.loading1 = false;
         state.tvShows = action.payload;
       })
       .addCase(fetchTvShows.rejected, (state, action) => {
         state.loading1 = false;
+        state.tvstatus = 'failed';
         state.error1 = action.error.message ?? 'Error';
       });
   },

@@ -162,7 +162,7 @@ const MovieDetail = () => {
                    bg-purple-600 hover:bg-purple-700
                    px-3 py-3 rounded-md
                    text-sm font-semibold
-                   transition ${roles && roles.includes('Admin') ? '' : 'opacity-50 cursor-not-allowed'}`}
+                   transition ${roles && roles.includes('Admin') ? '' : 'hidden'}`}
           >
             Edit Page
           </button>

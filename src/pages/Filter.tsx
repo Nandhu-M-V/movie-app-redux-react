@@ -11,12 +11,9 @@ import {
 const FilterResultsPage = () => {
   const navigate = useNavigate();
 
-  // ---------------- MOVIE DATA ----------------
   const [movies, setMovies] = useState<DiscoverMovie[]>([]);
   const [genres, setGenres] = useState<Genre[]>([]);
   const [totalPages, setTotalPages] = useState(0);
-
-  // ---------------- FILTER STATE ----------------
   const [search, setSearch] = useState('');
   const [selectedGenres, setSelectedGenres] = useState<number[]>([]);
   const [year, setYear] = useState<number | ''>('');
@@ -40,7 +37,6 @@ const FilterResultsPage = () => {
     loadGenres();
   }, []);
 
-  // ---------------- RESET PAGE WHEN FILTERS CHANGE ----------------
   useEffect(() => {
     setPage(1);
   }, [
@@ -53,7 +49,6 @@ const FilterResultsPage = () => {
     sortBy,
   ]);
 
-  // ---------------- FETCH MOVIES ----------------
   useEffect(() => {
     const buildFilters = (): DiscoverMovieFilters => {
       const filters: DiscoverMovieFilters = {
@@ -117,21 +112,17 @@ const FilterResultsPage = () => {
     sortBy,
   ]);
 
-
   const filteredMovies = useMemo(() => {
     return movies.filter((movie) =>
       movie.title.toLowerCase().includes(search.toLowerCase())
     );
   }, [movies, search]);
 
-
   return (
     <div className="min-h-screen flex bg-gray-100 dark:bg-black text-black dark:text-white">
-     
       <aside className="w-80 bg-white dark:bg-gray-900 pt-28 p-6 border-r border-gray-200 dark:border-gray-800 overflow-y-auto">
         <h2 className="text-xl font-bold mb-6">Filters</h2>
 
-        
         <div className="mb-6">
           <label className="block mb-2 text-sm font-medium">
             Search (within results)
@@ -170,7 +161,6 @@ const FilterResultsPage = () => {
           </div>
         </div>
 
-       
         <div className="mb-6">
           <label className="block mb-2 text-sm font-medium">Year</label>
           <input
@@ -184,7 +174,6 @@ const FilterResultsPage = () => {
           />
         </div>
 
-      
         <div className="mb-6">
           <label className="block mb-2 text-sm font-medium">Min Rating</label>
           <input
@@ -198,7 +187,6 @@ const FilterResultsPage = () => {
           />
         </div>
 
-       
         <div className="mb-6">
           <label className="block mb-2 text-sm font-medium">Min Votes</label>
           <input
@@ -209,7 +197,6 @@ const FilterResultsPage = () => {
           />
         </div>
 
-       
         <div className="mb-6">
           <label className="block mb-2 text-sm font-medium">Runtime</label>
           <div className="flex gap-2">
@@ -230,7 +217,6 @@ const FilterResultsPage = () => {
           </div>
         </div>
 
-   
         <div>
           <label className="block mb-2 text-sm font-medium">Sort By</label>
           <select
@@ -247,7 +233,6 @@ const FilterResultsPage = () => {
         </div>
       </aside>
 
-    
       <main className="pt-28 flex-1 p-8">
         <h2 className="text-2xl font-bold mb-6">
           Results ({filteredMovies.length})
@@ -288,7 +273,6 @@ const FilterResultsPage = () => {
           </div>
         )}
 
-        {/* Pagination */}
         <div className="flex justify-center mt-10 gap-4">
           <button
             disabled={page === 1}

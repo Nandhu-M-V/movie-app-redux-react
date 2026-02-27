@@ -17,7 +17,7 @@ const Home = () => {
   const { t } = useTranslation();
   const IMAGE_BANNER_URL = 'https://image.tmdb.org/t/p/original';
 
-  const { movies, loading, error } = useSelector(
+  const { movies, loading, status, error } = useSelector(
     (state: RootState) => state.movie
   );
 
@@ -41,7 +41,7 @@ const Home = () => {
       dispatch(fetchMovies(1));
       dispatch(fetchTvShows(1));
     }
-  }, [dispatch, movies.length, tvShows.length]);
+  }, [dispatch]);
 
   const randomSeed = random;
 

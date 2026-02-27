@@ -148,7 +148,7 @@ const TvDetail = () => {
               }
               navigate(`/tvshow/edit/${show.id}`);
             }}
-            className={`absolute bottom-0 right-0 bg-purple-600 hover:bg-purple-700 px-4 py-2 rounded-md text-sm font-semibold transition ${roles && roles.includes('Admin') ? '' : 'opacity-50 cursor-not-allowed'}`}
+            className={`absolute bottom-0 right-0 bg-purple-600 hover:bg-purple-700 px-4 py-2 rounded-md text-sm font-semibold transition ${roles && roles.includes('Admin') ? '' : 'hidden'}`}
           >
             Edit Show
           </button>

@@ -22,7 +22,7 @@ const Footer = () => {
             </h3>
             <ul className="space-y-2">
               <li
-                onClick={() => navigate('/Home')}
+                onClick={() => navigate('/')}
                 className="hover:text-purple-700 transition cursor-pointer"
               >
                 {t('home')}

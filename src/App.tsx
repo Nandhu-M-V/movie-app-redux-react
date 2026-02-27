@@ -8,6 +8,7 @@ import TvDetail from './pages/TvDetail';
 import EditMovie from './pages/EditMovies';
 import EditTvShow from './pages/EditTvShows';
 import FilterResultsPage from './pages/Filter';
+import NotFound from './pages/NotFound';
 
 const App = () => {
   return (
@@ -17,12 +18,12 @@ const App = () => {
           <Route path="movies/discover" element={<Movies />} />
           <Route path="tvshow/discover" element={<TvShows />} />
           <Route index element={<Home />} />
-          <Route path="home" element={<Home />} />
           <Route path="movies/edit/:id" element={<EditMovie />} />
           <Route path="tvshow/edit/:id" element={<EditTvShow />} />
           <Route path="movie/:id" element={<MovieDetail />} />
           <Route path="tv/:id" element={<TvDetail />} />
           <Route path="filter" element={<FilterResultsPage />} />
+          <Route path="*" element={<NotFound />} />
         </Route>
       </Routes>
     </Router>

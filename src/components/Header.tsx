@@ -65,7 +65,7 @@ const Header = () => {
       <nav className="w-full flex justify-between items-center h-20 text-white">
         <h1
           className={`text-4xl font-extrabold text-purple-700 text-shadow-xs hover:scale-105 text-shadow-black hover:text-purple-600 cursor-pointer `}
-          onClick={() => navigate('/Home')}
+          onClick={() => navigate('/')}
         >
           MovieApp
         </h1>

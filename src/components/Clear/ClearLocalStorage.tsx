@@ -7,7 +7,7 @@ const ClearLocalStorageButton = () => {
     localStorage.removeItem('editedMovies');
     localStorage.removeItem('editedTvShows');
     alert('All edited data cleared!');
-    navigate('/home');
+    navigate('/');
   };
 
   return <button onClick={handleClear}>Clear Data</button>;

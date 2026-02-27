@@ -22,7 +22,7 @@ const Movies = () => {
     if (movies.length === 0) {
       dispatch(fetchMovies(page));
     }
-  }, [dispatch, movies.length, page, i18n.language]);
+  }, [dispatch, page, i18n.language]);
 
   useEffect(() => {
     console.log(page);
