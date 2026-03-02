@@ -43,6 +43,19 @@ const MovieDetail = () => {
   const { user } = useAuth0();
   const roles = user?.['http://localhost:5002/roles'];
 
+  const slugify = (displayTitle: string): string => {
+    if (!displayTitle) return 'untitled';
+
+    return displayTitle
+      .toLowerCase()
+      .normalize('NFKD')
+      .replace(/[\u0300-\u036f]/g, '')
+      .replace(/[^\p{L}\p{N}\s-]/gu, '')
+      .trim()
+      .replace(/\s+/g, '-')
+      .replace(/-+/g, '-');
+  };
+
   useEffect(() => {
     if (!id) return;
 
@@ -95,24 +108,26 @@ const MovieDetail = () => {
   const year = movie.release_date?.split('-')[0];
 
   return (
-    <div className="text-white pt-20 bg-black min-h-screen">
+    <div className="text-white pt-20 dark:bg-purple-950 min-h-screen">
       <div
         className="relative h-[70vh] bg-cover bg-top"
         style={{
           backgroundImage: `url(https://image.tmdb.org/t/p/original${movie.backdrop_path})`,
         }}
       >
-        <div className="absolute inset-0 bg-linear-to-t from-black via-black/70 to-transparent" />
+        <div className="absolute inset-0 bg-linear-to-t from-black via-black/30 to-transparent" />
       </div>
 
       <div className="relative -mt-40 px-6 md:px-16 flex flex-col md:flex-row gap-10">
+        <div className="absolute top-40 z-0 inset-0 bg-linear-to-b from-black via-black/30 to-transparent" />
+
         <img
           src={`https://image.tmdb.org/t/p/w500${movie.poster_path}`}
           alt={movie.title}
-          className="w-64 rounded-xl shadow-2xl"
+          className="w-64 rounded-xl z-10 shadow-2xl"
         />
 
-        <div className="max-w-3xl">
+        <div className="max-w-3xl z-10">
           <h1 className="text-4xl font-bold">{movie.title}</h1>
           <p className="text-gray-400 italic mt-2">{movie.tagline}</p>
 
@@ -122,7 +137,7 @@ const MovieDetail = () => {
             <span>{movie.runtime} min</span>
           </div>
 
-          <div className="flex gap-3 mt-4 flex-wrap">
+          <div className="flex z-10 gap-3 mt-4 flex-wrap">
             {movie.genres.map((genre) => (
               <span
                 key={genre.id}
@@ -133,9 +148,11 @@ const MovieDetail = () => {
             ))}
           </div>
 
-          <p className="mt-6 text-gray-300 leading-relaxed">{movie.overview}</p>
+          <p className="mt-6 z-10 text-gray-300 leading-relaxed">
+            {movie.overview}
+          </p>
 
-          <div className="flex gap-6 mt-8 items-center flex-wrap">
+          <div className="flex z-10 gap-6 mt-8 items-center flex-wrap">
             {movie.production_companies.map(
               (company) =>
                 company.logo_path && (
@@ -143,7 +160,7 @@ const MovieDetail = () => {
                     key={company.id}
                     src={`https://image.tmdb.org/t/p/w200${company.logo_path}`}
                     alt={company.name}
-                    className="h-10 object-contain opacity-80"
+                    className="h-10 z-10 object-contain opacity-80"
                   />
                 )
             )}
@@ -158,7 +175,7 @@ const MovieDetail = () => {
               }
               navigate(`/movies/edit/${movie.id}`);
             }}
-            className={`absolute bottom-0 left-1/2 z-10
+            className={`absolute bottom-0 left-2/3 z-10
                    bg-purple-600 hover:bg-purple-700
                    px-3 py-3 rounded-md
                    text-sm font-semibold
@@ -170,14 +187,18 @@ const MovieDetail = () => {
       </div>
       {/* similars --- */}
       <div className="px-6 md:px-16 mt-16 pb-20">
-        <h2 className="text-2xl font-bold mb-6">Similar Movies</h2>
+        <h2 className=" text-purple-900 text-2xl font-bold mb-6">
+          Similar Movies
+        </h2>
 
-        <div className="flex gap-6 overflow-x-auto pb-4">
+        <div className="flex gap-6 custom-scrollbar overflow-x-auto pb-4">
           {similar.map((movie) => (
             <div
               key={movie.id}
               className="min-w-40 cursor-pointer"
-              onClick={() => navigate(`/movie/${movie.id}`)}
+              onClick={() =>
+                navigate(`/movie/${movie.id}/${slugify(movie.title)}`)
+              }
             >
               {movie.poster_path && (
                 <img
@@ -186,7 +207,7 @@ const MovieDetail = () => {
                   className="rounded-lg shadow-lg hover:scale-105 transition"
                 />
               )}
-              <p className="mt-2 text-sm">{movie.title}</p>
+              <p className="mt-2 text-black text-sm">{movie.title}</p>
             </div>
           ))}
         </div>

@@ -14,15 +14,15 @@ const Movies = () => {
 
   const [page, setpage] = useState(1);
 
-  const { movies, loading, error } = useSelector(
+  const { movies, loading, error, status } = useSelector(
     (state: RootState) => state.movie
   );
 
   useEffect(() => {
-    if (movies.length === 0) {
+    if (status === 'idle') {
       dispatch(fetchMovies(page));
     }
-  }, [dispatch, page, i18n.language]);
+  }, [status, dispatch, page, i18n.language]);
 
   useEffect(() => {
     console.log(page);
@@ -37,7 +37,9 @@ const Movies = () => {
   if (error) return <p className="text-red-500">{error}</p>;
 
   return (
-    <div className="bg-black min-h-screen text-white">
+    <div className="dark:bg-black bg-purple-200/80 pb-5 min-h-screen transition-all duration-200 text-white">
+      <div className="absolute top-180 inset-0 bg-linear-to-b from-black via-black/30 to-transparent" />
+
       <Carousal movies={movies} />
 
       <div className="px-10 py-5 grid grid-cols-2 sm:grid-cols-3 md:grid-cols-3 lg:grid-cols-5 gap-y-20 gap-10">
@@ -56,19 +58,21 @@ const Movies = () => {
         page === 1
           ? 'bg-gray-400 cursor-not-allowed opacity-60'
           : 'bg-purple-700 hover:bg-purple-800 active:scale-95'
-      }
-      text-white shadow-md`}
+      } text-black
+      dark:text-white shadow-md`}
           >
             {t('prev')}
           </button>
 
-          <span className="text-white font-semibold">Page {page}</span>
+          <span className="text-black dark:text-white font-semibold">
+            Page {page}
+          </span>
 
           <button
             onClick={() => newPage(page + 1)}
             className="px-4 py-2 rounded-lg font-medium bg-purple-700
-               hover:bg-purple-800 active:scale-95
-               text-white shadow-md transition-all duration-200"
+               hover:bg-purple-800 active:scale-95 text-black
+               dark:text-white shadow-md transition-all duration-200"
           >
             {t('next')}
           </button>

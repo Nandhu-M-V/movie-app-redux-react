@@ -28,6 +28,19 @@ const FilterResultsPage = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
+  const slugify = (displayTitle: string): string => {
+    if (!displayTitle) return 'untitled';
+
+    return displayTitle
+      .toLowerCase()
+      .normalize('NFKD')
+      .replace(/[\u0300-\u036f]/g, '')
+      .replace(/[^\p{L}\p{N}\s-]/gu, '')
+      .trim()
+      .replace(/\s+/g, '-')
+      .replace(/-+/g, '-');
+  };
+
   // ---------------- LOAD GENRES ----------------
   useEffect(() => {
     const loadGenres = async () => {
@@ -246,7 +259,9 @@ const FilterResultsPage = () => {
             {filteredMovies.map((movie) => (
               <div
                 key={movie.id}
-                onClick={() => navigate(`/movie/${movie.id}`)}
+                onClick={() =>
+                  navigate(`/movie/${movie.id}/${slugify(movie.title)}`)
+                }
                 className="bg-white dark:bg-gray-900 rounded-xl shadow-lg overflow-hidden hover:scale-105 transition-transform duration-300 cursor-pointer"
               >
                 {movie.poster_path ? (

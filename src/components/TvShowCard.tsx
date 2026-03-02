@@ -16,14 +16,26 @@ import { useNavigate } from 'react-router-dom';
 const IMAGE_BASE_URL = 'https://image.tmdb.org/t/p/w500';
 
 const TvShowCard = ({ movie }: { movie: BaseMedia }) => {
-  const displayTitle = movie.title || movie.name;
+  const displayTitle = movie.title || movie.name || 'Untitled';
   const displayDate = movie.release_date || movie.first_air_date;
+  const slugify = (displayTitle: string): string => {
+    if (!displayTitle) return 'untitled';
+
+    return displayTitle
+      .toLowerCase()
+      .normalize('NFKD')
+      .replace(/[\u0300-\u036f]/g, '')
+      .replace(/[^\p{L}\p{N}\s-]/gu, '')
+      .trim()
+      .replace(/\s+/g, '-')
+      .replace(/-+/g, '-');
+  };
 
   const navigate = useNavigate();
 
   return (
     <div
-      onClick={() => navigate(`/tv/${movie.id}`)}
+      onClick={() => navigate(`/tv/${movie.id}/${slugify(displayTitle)}`)}
       className="group relative w-62 h-95 snap-start
                  rounded-2xl overflow-hidden
                  transform transition-all duration-500

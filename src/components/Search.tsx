@@ -2,16 +2,29 @@ import { useState, useRef, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import type { BaseMedia } from './TvShowCard';
 
+interface SearchProps {
+  autoFocus?: boolean;
+}
+
 const API_KEY = import.meta.env.VITE_TMDB_ACCESS_TOKEN;
 
-const Search = () => {
+const Search = ({ autoFocus }: SearchProps) => {
   const [query, setQuery] = useState('');
   const [results, setResults] = useState<BaseMedia[]>([]);
   const [loading, setLoading] = useState(false);
+  const inputRef = useRef<HTMLInputElement>(null);
 
   const searchRef = useRef<HTMLDivElement>(null);
   const navigate = useNavigate();
   const debounceRef = useRef<number>(1);
+
+  useEffect(() => {
+    if (autoFocus) {
+      setTimeout(() => {
+        inputRef.current?.focus();
+      }, 200);
+    }
+  }, [autoFocus]);
 
   const fetchMovies = async (searchQuery: string) => {
     if (!searchQuery.trim()) {
@@ -76,9 +89,10 @@ const Search = () => {
   }, []);
 
   return (
-    <div ref={searchRef} className=" -translate-x-1/2 z-20 w-[90vw] max-w-2xl">
+    <div ref={searchRef} className=" z-20 md:w-md lg:w-2xl">
       <div className="relative">
         <input
+          ref={inputRef}
           type="text"
           placeholder="Search Movies, TV shows..."
           value={query}

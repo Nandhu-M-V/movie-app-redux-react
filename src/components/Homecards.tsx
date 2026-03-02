@@ -21,14 +21,29 @@ const HomeCards = ({
   movie: Movie;
   mediaType: 'movie' | 'tv';
 }) => {
-  const displayTitle = movie.title || movie.name;
+  const displayTitle = movie.title || movie.name || 'Untitled';
   const displayDate = movie.release_date || movie.first_air_date;
+
+  const slugify = (displayTitle: string): string => {
+    if (!displayTitle) return 'untitled';
+
+    return displayTitle
+      .toLowerCase()
+      .normalize('NFKD')
+      .replace(/[\u0300-\u036f]/g, '')
+      .replace(/[^\p{L}\p{N}\s-]/gu, '')
+      .trim()
+      .replace(/\s+/g, '-')
+      .replace(/-+/g, '-');
+  };
 
   const navigate = useNavigate();
 
   return (
     <div
-      onClick={() => navigate(`/${mediaType}/${movie.id}`)}
+      onClick={() =>
+        navigate(`/${mediaType}/${movie.id}/${slugify(displayTitle)}`)
+      }
       className="group relative w-40 h-65 snap-start ml-4
                  rounded-lg overflow-hidden transform transition-all duration-500 hover:scale-115 hover:-translate-y-1
                  hover:shadow-2xl hover:shadow-black/40"

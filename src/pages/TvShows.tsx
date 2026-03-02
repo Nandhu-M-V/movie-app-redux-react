@@ -10,7 +10,7 @@ import { useTranslation } from 'react-i18next';
 const TvShows = () => {
   const dispatch = useDispatch<AppDispatch>();
 
-  const { i18n } = useTranslation();
+  const { i18n, t } = useTranslation();
 
   const { tvShows, loading1, error1 } = useSelector(
     (state: RootState) => state.tvshow
@@ -33,7 +33,9 @@ const TvShows = () => {
   if (error1) return <p className="text-red-500">{error1}</p>;
 
   return (
-    <div className="bg-black min-h-screen text-white">
+    <div className="dark:bg-black bg-purple-200/80 pb-5 min-h-screen transition-all duration-200 text-white">
+      <div className="absolute top-180 inset-0 bg-linear-to-b from-black via-black/30 to-transparent" />
+
       <Carousal movies={tvShows} />
 
       <div className="px-10 py-5 grid grid-cols-2 sm:grid-cols-3 md:grid-cols-3 lg:grid-cols-5 gap-y-20 gap-10">
@@ -52,20 +54,24 @@ const TvShows = () => {
           ? 'bg-gray-400 cursor-not-allowed opacity-60'
           : 'bg-purple-700 hover:bg-purple-800 active:scale-95'
       }
-      text-white shadow-md`}
+      text-black
+      dark:text-white shadow-md`}
           >
-            Prev
+            {t('prev')}
           </button>
 
-          <span className="text-white font-semibold">Page {page}</span>
+          <span className="text-black dark:text-white font-semibold">
+            Page {page}
+          </span>
 
           <button
             onClick={() => newPage(page + 1)}
             className="px-4 py-2 rounded-lg font-medium bg-purple-700
                hover:bg-purple-800 active:scale-95
-               text-white shadow-md transition-all duration-200"
+               text-black
+               dark:text-white shadow-md transition-all duration-200"
           >
-            Next
+            {t('next')}
           </button>
         </div>
       </div>

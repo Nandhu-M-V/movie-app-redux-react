@@ -1,10 +1,25 @@
 import { useTranslation } from 'react-i18next';
+import { fetchMovies } from '../features/movies/movieSlice';
+import { fetchTvShows } from '@/features/Tvshows/tvshowSlice';
+import type { AppDispatch, RootState } from '../app/store';
+import { useDispatch, useSelector } from 'react-redux';
 
 const LanguageSwitcher = () => {
+  const dispatch = useDispatch<AppDispatch>();
+
+  //   const { movies, loading, error, status } = useSelector(
+  //     (state: RootState) => state.movie
+  //   );
+  //   const { tvShows, loading1, tvstatus, error1 } = useSelector(
+  //     (state: RootState) => state.tvshow
+  //   );
+
   const { i18n, t } = useTranslation();
 
   const handleChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     i18n.changeLanguage(e.target.value);
+    dispatch(fetchMovies(1));
+    dispatch(fetchTvShows(1));
   };
 
   return (
