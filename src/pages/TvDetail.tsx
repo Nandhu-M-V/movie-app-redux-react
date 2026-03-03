@@ -3,6 +3,7 @@ import { useParams, useNavigate } from 'react-router-dom';
 import Loading from '@/components/Loading';
 import { fetchShowid } from '@/utils/ApiFetch';
 import { useAuth0 } from '@auth0/auth0-react';
+import { useTranslation } from 'react-i18next';
 
 export interface Genre {
   id: number;
@@ -58,6 +59,8 @@ const TvDetail = () => {
   const { user } = useAuth0();
   const roles = user?.['http://localhost:5002/roles'];
 
+  const { i18n } = useTranslation();
+
   useEffect(() => {
     if (!showId) return;
 
@@ -86,7 +89,7 @@ const TvDetail = () => {
     };
 
     getShow();
-  }, [showId]);
+  }, [showId, i18n.language]);
 
   if (loading) return <Loading />;
   if (!show)
