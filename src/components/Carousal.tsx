@@ -27,7 +27,7 @@ export default function Carousal({ movies }: CarousalProps) {
   );
 
   return (
-    <Carousel plugins={[plugin.current]} className="w-full">
+    <Carousel plugins={[plugin.current]} className="w-full mt-20">
       <CarouselContent>
         {movies.map((movie) => (
           <CarouselItem key={movie.id}>

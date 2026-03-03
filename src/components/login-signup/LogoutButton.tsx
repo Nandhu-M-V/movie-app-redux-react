@@ -14,6 +14,7 @@ const LogoutButton = () => {
           },
         })
       }
+      className="cursor-pointer"
     >
       {t('logout')}
     </button>

@@ -33,12 +33,21 @@ const TvShows = () => {
   if (error1) return <p className="text-red-500">{error1}</p>;
 
   return (
-    <div className="dark:bg-black bg-purple-200/80 pb-5 min-h-screen transition-all duration-200 text-white">
-      <div className="absolute top-180 inset-0 bg-linear-to-b from-black via-black/30 to-transparent" />
+    <div className="dark:bg-black bg-purple-300/70 pb-5 min-h-screen transition-all duration-200 text-white">
+      <div className="absolute top-180 inset-0 bg-linear-to-b from-black/40 via-black/10 to-transparent" />
 
       <Carousal movies={tvShows} />
 
-      <div className="px-10 py-5 grid grid-cols-2 sm:grid-cols-3 md:grid-cols-3 lg:grid-cols-5 gap-y-20 gap-10">
+      <div
+        className="px-10 py-5
+  grid
+  min-[600px]:grid-cols-2
+  min-[850px]:grid-cols-3
+  min-[1100px]:grid-cols-4
+  min-[1400px]:grid-cols-5
+  gap-y-20 gap-10
+  justify-center"
+      >
         {tvShows.map((show) => (
           <TvShowCard key={show.id} movie={show} />
         ))}
@@ -52,7 +61,7 @@ const TvShows = () => {
       ${
         page === 1
           ? 'bg-gray-400 cursor-not-allowed opacity-60'
-          : 'bg-purple-700 hover:bg-purple-800 active:scale-95'
+          : 'bg-purple-700 cursor-pointer    hover:bg-purple-800 active:scale-95'
       }
       text-black
       dark:text-white shadow-md`}
@@ -60,7 +69,7 @@ const TvShows = () => {
             {t('prev')}
           </button>
 
-          <span className="text-black dark:text-white font-semibold">
+          <span className="text-black cursor-default dark:text-white font-semibold">
             Page {page}
           </span>
 
@@ -68,7 +77,7 @@ const TvShows = () => {
             onClick={() => newPage(page + 1)}
             className="px-4 py-2 rounded-lg font-medium bg-purple-700
                hover:bg-purple-800 active:scale-95
-               text-black
+               text-black cursor-pointer
                dark:text-white shadow-md transition-all duration-200"
           >
             {t('next')}

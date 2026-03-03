@@ -7,6 +7,7 @@ import { useAuth0 } from '@auth0/auth0-react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useEffect } from 'react';
 import HomeCards from '@/components/Homecards';
+import '../components/styles/styles.css';
 
 import { random } from '@/utils/random';
 import { useTranslation } from 'react-i18next';
@@ -53,10 +54,11 @@ const Home = () => {
 
   return (
     <>
-      <div className=" min-h-screen pl-20 text-white">
+      <div className=" min-h-screen pl-20 pb-5 text-white">
+        <div className="dark:hidden bg-purple-300/30 w-full left-0 -z-9 top-190 absolute h-full" />
         <h1 className="absolute z-20 top-30 lg:left-30 font-bold text-2xl md:text-4xl lg:text-6xl text-purple-200">
-          {t('welcomeUser')}
-          <div>
+          <label className="t-shadow">{t('welcomeUser')}</label>
+          <div className="t-shadow">
             {roles && roles.includes('Admin')
               ? `Admin ${name.split('@')[0].toUpperCase()} `
               : name.includes('@')
@@ -69,7 +71,7 @@ const Home = () => {
           <>
             <img
               src={`${IMAGE_BANNER_URL}${randomMovie.backdrop_path}`}
-              className="w-full left-0 -z-10 blur-2xl hidden dark:block transition-all fixed h-full object-cover rounded-4xl"
+              className="w-full left-0 -z-10 blur-2xl transition-all fixed h-full object-cover rounded-4xl"
               alt="movie backdrop"
             />
           </>
@@ -78,7 +80,7 @@ const Home = () => {
           <HomeBanner backdrop={randomMovie.backdrop_path} />
         )}
 
-        <h2 className="font-extrabold text-purple-800 mt-15 relative z-10 pb-0 text-4xl">
+        <h2 className="font-extrabold text-white mt-15 relative z-10 pb-0 text-4xl">
           {t('trendingMovies')}
         </h2>
 
@@ -100,7 +102,7 @@ const Home = () => {
             </div>
           ))}
         </div>
-        <div className="absolute top-194 inset-0 bg-linear-to-b from-black/70 via-black/30 to-transparent" />
+        <div className="absolute top-194 pointer-events-none inset-0 bg-linear-to-b from-black/70 via-black/30 to-transparent" />
 
         <h2 className=" font-extrabold py-4 text-purple-900 text-4xl">
           {' '}

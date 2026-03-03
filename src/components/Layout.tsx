@@ -6,7 +6,7 @@ const Layout = () => {
   return (
     <>
       <Header />
-      <main className=" w-full overflow-hidden  text-white bg-purple-300/70 transition-all duration-200 dark:bg-black/80 ">
+      <main className=" w-full overflow-hidden text-white transition-all duration-200 bg-black/70 ">
         <Outlet />
       </main>
       <Footer />

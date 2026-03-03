@@ -51,6 +51,19 @@ const EditMovie = () => {
     return Object.keys(newErrors).length === 0;
   };
 
+  const slugify = (displayTitle: string): string => {
+    if (!displayTitle) return 'untitled';
+
+    return displayTitle
+      .toLowerCase()
+      .normalize('NFKD')
+      .replace(/[\u0300-\u036f]/g, '')
+      .replace(/[^\p{L}\p{N}\s-]/gu, '')
+      .trim()
+      .replace(/\s+/g, '-')
+      .replace(/-+/g, '-');
+  };
+
   const handleSubmit = () => {
     if (!movie || !validate()) return;
 
@@ -69,7 +82,7 @@ const EditMovie = () => {
     parsed[movieId] = updatedMovie;
     localStorage.setItem('editedMovies', JSON.stringify(parsed));
 
-    navigate(`/movie/${movieId}`);
+    navigate(`/movie/${movieId}/${slugify(movie.title)}`);
   };
 
   if (!movie)

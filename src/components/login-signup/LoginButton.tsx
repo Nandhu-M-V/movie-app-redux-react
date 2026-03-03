@@ -6,7 +6,13 @@ const LoginButton = () => {
 
   const { loginWithRedirect } = useAuth0();
   return (
-    <>{<button onClick={() => loginWithRedirect()}>{t('login')}</button>}</>
+    <>
+      {
+        <button className="cursor-pointer" onClick={() => loginWithRedirect()}>
+          {t('login')}
+        </button>
+      }
+    </>
   );
 };
 

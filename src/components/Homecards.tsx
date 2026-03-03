@@ -44,7 +44,7 @@ const HomeCards = ({
       onClick={() =>
         navigate(`/${mediaType}/${movie.id}/${slugify(displayTitle)}`)
       }
-      className="group relative w-40 h-65 snap-start ml-4
+      className="group relative w-40 h-65 snap-start ml-4 cursor-pointer
                  rounded-lg overflow-hidden transform transition-all duration-500 hover:scale-115 hover:-translate-y-1
                  hover:shadow-2xl hover:shadow-black/40"
     >

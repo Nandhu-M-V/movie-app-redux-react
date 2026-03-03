@@ -95,28 +95,30 @@ const TvDetail = () => {
   const year = show.first_air_date?.split('-')[0];
 
   return (
-    <div className="text-white bg-black pt-20 min-h-screen relative">
+    <div className="text-white bg-purple-400/50 dark:bg-gray-950 pt-20 min-h-screen relative">
       <div
-        className="relative h-[70vh] bg-cover bg-top"
+        className="relative h-[70vh]  bg-cover bg-top"
         style={{
           backgroundImage: `url(https://image.tmdb.org/t/p/original${show.backdrop_path})`,
         }}
       >
-        <div className="absolute inset-0 bg-linear-to-t from-black via-black/70 to-transparent" />
+        <div className="absolute inset-0 dark:bg-linear-to-t from-black via-black/30 to-transparent" />
       </div>
 
       <div className="relative -mt-40 px-6 md:px-16 flex flex-col md:flex-row gap-10">
+        <div className="absolute dark:hidden top-40 z-0 inset-0 bg-linear-to-b from-black/70 via-black/30 to-transparent h-full" />
+        <div className="absolute top-40 z-0 inset-0 bg-linear-to-b from-white/20 via-white/10 to-transparent h-full" />
         <img
           src={`https://image.tmdb.org/t/p/w500${show.poster_path}`}
           alt={show.name}
-          className="w-64 rounded-xl shadow-2xl"
+          className="w-64 max-h-100 z-10 rounded-xl shadow-2xl"
         />
 
         <div className="max-w-3xl relative">
           <h1 className="text-4xl font-bold">{show.name}</h1>
           <p className="text-gray-400 italic mt-2">{show.tagline}</p>
 
-          <div className="flex flex-wrap gap-4 mt-4 text-sm text-gray-300">
+          <div className="flex flex-wrap gap-4 mt-4 text-sm z-10 text-gray-300">
             <span>⭐ {show.vote_average.toFixed(1)}</span>
             <span>{year}</span>
             <span>{show.number_of_seasons} Seasons</span>
@@ -148,7 +150,7 @@ const TvDetail = () => {
               }
               navigate(`/tvshow/edit/${show.id}`);
             }}
-            className={`absolute bottom-0 right-0 bg-purple-600 hover:bg-purple-700 px-4 py-2 rounded-md text-sm font-semibold transition ${roles && roles.includes('Admin') ? '' : 'hidden'}`}
+            className={`absolute bottom-0 cursor-pointer right-0 bg-purple-600 hover:bg-purple-700 px-4 py-2 rounded-md text-sm font-semibold transition ${roles && roles.includes('Admin') ? '' : 'hidden'}`}
           >
             Edit Show
           </button>
@@ -164,7 +166,7 @@ const TvDetail = () => {
             </div>
           </div>
 
-          <div className="flex gap-6 mt-6 items-center flex-wrap">
+          <div className="flex gap-6 mt-6 z-10 items-center flex-wrap">
             {show.networks
               .slice(0, 7)
               .map(
@@ -174,7 +176,7 @@ const TvDetail = () => {
                       key={network.id}
                       src={`https://image.tmdb.org/t/p/w200${network.logo_path}`}
                       alt={network.name}
-                      className="h-10 object-contain opacity-80"
+                      className="h-10 object-contain z-10 opacity-80"
                     />
                   )
               )}
@@ -183,9 +185,9 @@ const TvDetail = () => {
       </div>
 
       <div className="px-6 md:px-16 mt-16 pb-20">
-        <h2 className="text-2xl font-bold mb-6">Seasons</h2>
+        <h2 className="text-2xl text-purple-700 font-bold mb-6">Seasons</h2>
 
-        <div className="flex gap-6 overflow-x-auto pb-4">
+        <div className="flex gap-6 custom-scrollbar overflow-x-auto pb-4">
           {show.seasons
             .filter((season) => season.season_number !== 0)
             .map((season) => (
@@ -197,7 +199,9 @@ const TvDetail = () => {
                     className="rounded-lg shadow-lg"
                   />
                 )}
-                <p className="mt-2 text-sm">{season.name}</p>
+                <p className="mt-2 dark:text-white text-black text-sm">
+                  {season.name}
+                </p>
                 <p className="text-gray-400 text-xs">
                   {season.episode_count} Episodes
                 </p>

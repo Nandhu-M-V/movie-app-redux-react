@@ -25,9 +25,8 @@ const MovieCard = ({ movie }: { movie: BaseMedia }) => {
       onClick={() => navigate(`/movie/${movie.id}/${slugify(displayTitle)}`)}
       className="group relative w-62 h-95 snap-start
                  rounded-2xl overflow-hidden
-                 cursor-pointer
                  transform transition-all duration-500
-                 hover:scale-105 hover:-translate-y-1
+                 hover:scale-105 cursor-pointer hover:-translate-y-1
                  hover:shadow-2xl hover:shadow-black/40"
     >
       <img

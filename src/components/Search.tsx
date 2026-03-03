@@ -65,13 +65,26 @@ const Search = ({ autoFocus }: SearchProps) => {
     return () => clearTimeout(debounceRef.current);
   }, [query]);
 
-  const handleSelect = (type: string, id: number) => {
+  const slugify = (displayTitle: string): string => {
+    if (!displayTitle) return 'untitled';
+
+    return displayTitle
+      .toLowerCase()
+      .normalize('NFKD')
+      .replace(/[\u0300-\u036f]/g, '')
+      .replace(/[^\p{L}\p{N}\s-]/gu, '')
+      .trim()
+      .replace(/\s+/g, '-')
+      .replace(/-+/g, '-');
+  };
+
+  const handleSelect = (type: string, id: number, name: string) => {
     setQuery('');
     setResults([]);
     if (type.toLowerCase() === 'movie') {
-      navigate(`/movie/${id}`);
+      navigate(`/movie/${id}/${slugify(name)}`);
     } else if (type.toLowerCase() === 'tv') {
-      navigate(`/tv/${id}`);
+      navigate(`/tv/${id}/${name}`);
     }
   };
 
@@ -115,7 +128,13 @@ const Search = ({ autoFocus }: SearchProps) => {
         <div className="bg-black/90 backdrop-blur-lg absolute top-16 max-w-3xl w-full rounded-xl max-h-96 overflow-y-auto custom-scrollbar shadow-2xl border border-gray-800">
           {results.slice(0, 15).map((item) => (
             <div
-              onClick={() => handleSelect(item.media_type || 'movie', item.id)}
+              onClick={() =>
+                handleSelect(
+                  item.media_type || 'movie',
+                  item.id,
+                  item.title || item.name || ''
+                )
+              }
               key={item.id}
               className="flex items-center gap-4 p-3 hover:bg-gray-800 transition cursor-pointer"
             >

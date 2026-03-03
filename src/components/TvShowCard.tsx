@@ -38,6 +38,7 @@ const TvShowCard = ({ movie }: { movie: BaseMedia }) => {
       onClick={() => navigate(`/tv/${movie.id}/${slugify(displayTitle)}`)}
       className="group relative w-62 h-95 snap-start
                  rounded-2xl overflow-hidden
+                 cursor-pointer
                  transform transition-all duration-500
                  hover:scale-105 hover:-translate-y-1
                  hover:shadow-2xl hover:shadow-black/40"

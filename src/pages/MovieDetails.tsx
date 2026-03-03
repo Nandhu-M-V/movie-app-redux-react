@@ -5,6 +5,7 @@ import type { SimilarMovie } from '@/utils/ApiFetch';
 import { useAuth0 } from '@auth0/auth0-react';
 
 import { fetchMovieid, fetchSimilarMovies } from '@/utils/ApiFetch';
+import { useTranslation } from 'react-i18next';
 
 interface Genre {
   id: number;
@@ -40,9 +41,12 @@ const MovieDetail = () => {
 
   const navigate = useNavigate();
 
+  const { i18n } = useTranslation();
+
   const { user } = useAuth0();
   const roles = user?.['http://localhost:5002/roles'];
 
+  //adding to url
   const slugify = (displayTitle: string): string => {
     if (!displayTitle) return 'untitled';
 
@@ -91,11 +95,11 @@ const MovieDetail = () => {
     };
 
     getShow();
-  }, [id]);
+  }, [id, i18n.language]);
 
-  useEffect(() => {
-    console.log(movie);
-  }, [movie]);
+  //   useEffect(() => {
+  //     console.log(movie);
+  //   }, [movie]);
 
   if (loading) return <Loading />;
   if (!movie)
@@ -108,18 +112,19 @@ const MovieDetail = () => {
   const year = movie.release_date?.split('-')[0];
 
   return (
-    <div className="text-white pt-20 dark:bg-purple-950 min-h-screen">
+    <div className="text-white pt-20 bg-purple-400/50 dark:bg-gray-950 min-h-screen">
       <div
         className="relative h-[70vh] bg-cover bg-top"
         style={{
           backgroundImage: `url(https://image.tmdb.org/t/p/original${movie.backdrop_path})`,
         }}
       >
-        <div className="absolute inset-0 bg-linear-to-t from-black via-black/30 to-transparent" />
+        <div className="absolute inset-0 dark:bg-linear-to-t from-black via-black/30 to-transparent" />
       </div>
 
       <div className="relative -mt-40 px-6 md:px-16 flex flex-col md:flex-row gap-10">
-        <div className="absolute top-40 z-0 inset-0 bg-linear-to-b from-black via-black/30 to-transparent" />
+        <div className="absolute dark:hidden top-40 z-0 inset-0 bg-linear-to-b from-black/70 via-black/30 to-transparent h-full" />
+        <div className="absolute top-40 z-0 inset-0 bg-linear-to-b from-white/20 via-white/10 to-transparent h-full" />
 
         <img
           src={`https://image.tmdb.org/t/p/w500${movie.poster_path}`}
@@ -165,7 +170,7 @@ const MovieDetail = () => {
                 )
             )}
           </div>
-
+          {/* editbutton */}
           <button
             onClick={(e) => {
               e.stopPropagation();
@@ -178,7 +183,7 @@ const MovieDetail = () => {
             className={`absolute bottom-0 left-2/3 z-10
                    bg-purple-600 hover:bg-purple-700
                    px-3 py-3 rounded-md
-                   text-sm font-semibold
+                   text-sm font-semibold cursor-pointer
                    transition ${roles && roles.includes('Admin') ? '' : 'hidden'}`}
           >
             Edit Page
@@ -187,7 +192,7 @@ const MovieDetail = () => {
       </div>
       {/* similars --- */}
       <div className="px-6 md:px-16 mt-16 pb-20">
-        <h2 className=" text-purple-900 text-2xl font-bold mb-6">
+        <h2 className=" text-purple-700 text-2xl font-bold mb-6">
           Similar Movies
         </h2>
 
@@ -204,10 +209,12 @@ const MovieDetail = () => {
                 <img
                   src={`https://image.tmdb.org/t/p/w300${movie.poster_path}`}
                   alt={movie.title}
-                  className="rounded-lg shadow-lg hover:scale-105 transition"
+                  className="rounded-lg cursor-pointer shadow-lg hover:scale-105 transition"
                 />
               )}
-              <p className="mt-2 text-black text-sm">{movie.title}</p>
+              <p className="mt-2 dark:text-white text-black text-sm">
+                {movie.title}
+              </p>
             </div>
           ))}
         </div>

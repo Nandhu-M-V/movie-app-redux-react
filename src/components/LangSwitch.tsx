@@ -1,8 +1,8 @@
 import { useTranslation } from 'react-i18next';
 import { fetchMovies } from '../features/movies/movieSlice';
 import { fetchTvShows } from '@/features/Tvshows/tvshowSlice';
-import type { AppDispatch, RootState } from '../app/store';
-import { useDispatch, useSelector } from 'react-redux';
+import type { AppDispatch } from '../app/store';
+import { useDispatch } from 'react-redux';
 
 const LanguageSwitcher = () => {
   const dispatch = useDispatch<AppDispatch>();
@@ -18,6 +18,8 @@ const LanguageSwitcher = () => {
 
   const handleChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     i18n.changeLanguage(e.target.value);
+    localStorage.removeItem('editedMovies');
+    localStorage.removeItem('editedTvShows');
     dispatch(fetchMovies(1));
     dispatch(fetchTvShows(1));
   };
@@ -29,13 +31,21 @@ const LanguageSwitcher = () => {
         onChange={handleChange}
         className="rounded-md shadow-xs shadow-black
         bg-purple-700 text-gray-200 font-bold
-        px-3 py-3 hover:bg-purple-800 text-sm
+        px-3 py-3 hover:bg-purple-800 text-sm cursor-pointer
         focus:outline-none focus:ring-2 focus:ring-purple-500"
       >
-        <option value="en">{t('english')}</option>
-        <option value="hi">{t('hindi')}</option>
-        <option value="ja">{t('japanese')}</option>
-        <option value="de">{t('german')}</option>
+        <option className="cursor-pointer" value="en">
+          {t('english')}
+        </option>
+        <option className="cursor-pointer" value="hi">
+          {t('hindi')}
+        </option>
+        <option className="cursor-pointer" value="ja">
+          {t('japanese')}
+        </option>
+        <option className="cursor-pointer" value="de">
+          {t('german')}
+        </option>
       </select>
     </div>
   );
